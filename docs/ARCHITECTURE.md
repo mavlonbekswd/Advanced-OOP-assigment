@@ -14,7 +14,7 @@
 | Layer | Planned class | Responsibility |
 | --- | --- | --- |
 | Model | `Coordinate` | An immutable row/column location (implemented). |
-| Model | `Ship` | A ship's occupied locations, hits and sunk state (next). |
+| Model | `Ship` | A ship's occupied locations, hits and sunk state (implemented). |
 | Model | `Board` | Board size, ship placement validation, shot state and shot results. |
 | Service | `RandomShipPlacer` | Place an entire valid fleet using random orientation/start coordinates. |
 | Controller | `GameController` | Start/restart game, process shots, expose results for the UI. |
@@ -39,3 +39,6 @@
 ## Report evidence
 
 The starter has 10 checks executed in a standalone harness (not JUnit). Preserve a terminal screenshot for development evidence if useful. After `Ship` and `Board` exist, add substantive unit tests, a functional test table and screenshots matching actual behaviour.
+
+## 14 November 2026 — Ship implementation decision
+`Ship` is a final concrete class composed with `ShipType`, an enum encoding lengths 4/3/2. Types currently differ only by length, so subclasses would add no distinct behaviour. Positions are defensively copied, sorted and exposed as an immutable list; hit state is a private Set. Construction rejects duplicate, gapped, diagonal and bent shapes. Board bounds and inter-ship adjacency remain responsibilities of the future Board. `registerHit` returns true only for a newly recorded hit; Board will distinguish a miss from a duplicate shot.

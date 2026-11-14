@@ -1,0 +1,82 @@
+package battleship.model;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
+/**
+ * A placed, straight ship with immutable positions and encapsulated hit state.
+ * Board bounds and relationships to other ships are the Board's responsibility.
+ */
+public final class Ship {
+    private final ShipType type;
+    private final List<Coordinate> positions;
+    private final Set<Coordinate> hits = new HashSet<>();
+
+    /**
+     * Creates a ship from distinct, contiguous horizontal or vertical cells.
+     * Input order does not matter. The supplied collection is defensively copied.
+     *
+     * @param type required ship type
+     * @param positions occupied cells; count must match the type's length
+     * @throws NullPointerException if type, positions or any cell is null
+     * @throws IllegalArgumentException if the cells do not form a valid ship
+     */
+    public Ship(ShipType type, List<Coordinate> positions) {
+        this.type = Objects.requireNonNull(type, "Ship type is required");
+        Objects.requireNonNull(positions, "Positions are required");
+        List<Coordinate> copy = new ArrayList<>(positions);
+        for (Coordinate cell : copy) {
+            Objects.requireNonNull(cell, "Ship cells cannot be null");
+        }
+        if (copy.size() != type.getLength()
+                || new HashSet<>(copy).size() != copy.size()) {
+            throw new IllegalArgumentException("Distinct cell count must match ship length");
+        }
+        boolean horizontal = copy.stream().allMatch(c -> c.getRow() == copy.get(0).getRow());
+        boolean vertical = copy.stream().allMatch(c -> c.getColumn() == copy.get(0).getColumn());
+        if (!horizontal && !vertical) {
+            throw new IllegalArgumentException("Ship must be horizontal or vertical");
+        }
+        copy.sort(horizontal
+                ? java.util.Comparator.comparingInt(Coordinate::getColumn)
+                : java.util.Comparator.comparingInt(Coordinate::getRow));
+        for (int i = 1; i < copy.size(); i++) {
+            long previous = horizontal ? copy.get(i - 1).getColumn() : copy.get(i - 1).getRow();
+            long current = horizontal ? copy.get(i).getColumn() : copy.get(i).getRow();
+            if (current - previous != 1) {
+                throw new IllegalArgumentException("Ship cells must be contiguous");
+            }
+        }
+        this.positions = Collections.unmodifiableList(copy);
+    }
+
+    /** @return ship type */
+    public ShipType getType() { return type; }
+
+    /** @return immutable occupied cells in coordinate order */
+    public List<Coordinate> getPositions() { return positions; }
+
+    /** @return count of distinct successful hits */
+    public int getHitCount() { return hits.size(); }
+
+    /** @param cell queried cell; @return whether this ship occupies it */
+    public boolean occupies(Coordinate cell) {
+        return positions.contains(Objects.requireNonNull(cell, "Cell is required"));
+    }
+
+    /**
+     * Records a hit only once. Misses and repeated hits leave state unchanged.
+     * @param cell shot location
+     * @return true only when a new hit is recorded
+     */
+    public boolean registerHit(Coordinate cell) {
+        return occupies(cell) && hits.add(cell);
+    }
+
+    /** @return true when every occupied cell has been hit */
+    public boolean isSunk() { return hits.size() == positions.size(); }
+}

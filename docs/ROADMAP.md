@@ -1,11 +1,11 @@
 # Zero to MVP roadmap
 
-Only P0 and the Coordinate portion of P1 are present. This is a roadmap, not a claim of completed development.
+P0 and the Coordinate and Ship portions of P1 are present. This is a roadmap, not a claim of completed development.
 
 | Phase | Deliverable | Exit criteria | Status |
 |---|---|---|---|
 | P0 | Requirements and initial design | Preserve original planning baseline and identify assumptions | Baseline imported |
-| P1 | Domain model | Coordinate, Ship, Board; bounds, shots, sunk state tested | Coordinate only |
+| P1 | Domain model | Coordinate, Ship, Board; bounds, shots, sunk state tested | Coordinate and Ship complete; Board next |
 | P2 | Fleet placement | Exact fleet, both orientations, no overlap/touching, bounded retries | Planned |
 | P3 | Controller | Start/restart, reject duplicate shots, victory state | Planned |
 | P4 | Swing GUI | 100 clickable cells, red/blue feedback, restart, victory message | Planned |

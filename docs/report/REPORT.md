@@ -9,10 +9,10 @@ The project aims to implement a single-player Java Battleship game with a testab
 See preserved initial design, requirements, architecture, proposed UML and roadmap. The original document predates this repository setup; importing it does not establish a Git creation date for that planning work.
 
 ## Implementation
-Implemented so far: immutable Coordinate and a demonstration entry point. Ship, Board, random placement, controller and Swing interface are not implemented. Describe changes from the original plan as development occurs.
+Implemented so far: immutable Coordinate, ShipType, Ship with validated positions and hit tracking, and a demonstration entry point. Board, random placement, controller and Swing interface are not implemented. Describe changes from the original plan as development occurs.
 
 ## Testing
-The starter includes ten dependency-free Coordinate checks. These are not JUnit tests. Record actual runs in the testing log. Full game functional evidence remains pending.
+The starter includes ten dependency-free Coordinate checks and 52 Ship checks, executed successfully on 14 November 2026. These are not JUnit tests. Record actual runs in the testing log. Full game functional evidence remains pending.
 
 ## Critical evaluation
 Current limitation: this is a starter, not a playable game. Evaluate the completed game against each requirement later using actual evidence.
