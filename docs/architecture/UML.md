@@ -50,3 +50,27 @@ View-->>Player: Colour and victory feedback
 ## Use cases
 
 Actor: human player. Use cases: start game; select target; inspect hit/miss feedback; see victory; restart. Random placement occurs as part of starting a game. This list is a draft inventory: draw the formal UML use-case diagram for the planning report before further implementation.
+
+## Implemented model checkpoint — 15 November 2026
+
+```mermaid
+classDiagram
+    Board *-- Ship : owns copies
+    Board --> ShotResult : records outcomes
+    Ship --> ShipType : type
+    Ship --> Coordinate : positions
+    Board --> Coordinate : shot keys
+    class Board {
+        +Board()
+        +Board(int size)
+        +canPlaceShip(Ship) boolean
+        +placeShip(Ship) void
+        +fireAt(Coordinate) ShotResult
+        +getShots() Map
+        +getShipCount() int
+        +getSunkShipCount() int
+        +allShipsSunk() boolean
+    }
+```
+
+Earlier diagrams remain proposed architecture. This checkpoint describes the implemented model; fleet generation and MVC integration are still pending.
