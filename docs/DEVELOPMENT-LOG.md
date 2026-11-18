@@ -111,3 +111,17 @@ recorded in `docs/diagrams/README.md` so they can be deleted.
 
 Report sections 2.3, 2.4, 2.5 and 4.3 now carry the figures and a short commentary
 each, replacing the pending notices.
+
+## 2026-11-18 — Diagrams restyled for consistency
+The four diagrams were drawn in two different styles: three in plain black and white
+and the sequence diagram in the blue its generator always produces. The sequence
+generator cannot be forced into black and white, so the other three were redrawn in
+the same blue instead. One consistent set matters more than which of the two styles
+it is, since the lecture slides ask for a consistent document and neither the brief
+nor the slides mention colour at all.
+
+Colour now carries meaning rather than decoration: solid blue for what this project
+wrote, dashed grey for what is outside it (Swing's JFrame, and the use case the
+player never performs), and a filled actor. Nothing depends on colour alone, so the
+figures still read when printed in black and white. The earlier black and white
+exports are kept in docs/diagrams/bw.
