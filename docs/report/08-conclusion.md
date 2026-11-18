@@ -1,8 +1,12 @@
 # 8. Conclusion
 
-*Target: 80 words. Status: **PENDING** — write last.*
+*Target: 80 words. Status: complete.*
 
 ---
 
-A short closing summary: what was built, whether it meets the brief, and the single
-most useful thing that would be done next. No new information should appear here.
+This project produced a working single-player Battleship game that meets every
+requirement in the brief, together with the two chosen extensions of random placement
+and a mouse-controlled interface. Separating the rules from the interface allowed the
+game to be tested thoroughly before anything was drawn, and writing checks before
+code found two defects that would otherwise have reached the finished application.
+The single most valuable next step would be to convert those checks to JUnit.

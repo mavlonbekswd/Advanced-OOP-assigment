@@ -21,9 +21,9 @@ report is a description of the project rather than a diary.
 | 4 | [Implementation](04-implementation.md) | 10% | 300 | Complete; final UML diagram pending |
 | 5 | [Screenshots](05-screenshots.md) | part of 10% | 100 | Complete; six captured figures |
 | 6 | [Testing](06-testing.md) | 15% | 300 | Complete; unit and functional |
-| 7 | [Critical evaluation](07-critical-evaluation.md) | 15% | 300 | **Pending** — now unblocked |
-| 8 | [Conclusion](08-conclusion.md) | part of 5% | 80 | **Pending** — write last |
-| 9 | [References](09-references.md) | part of 5% | — | Pending |
+| 7 | [Critical evaluation](07-critical-evaluation.md) | 15% | 300 | Complete |
+| 8 | [Conclusion](08-conclusion.md) | part of 5% | 80 | Complete |
+| 9 | [References](09-references.md) | part of 5% | — | Pending formatting |
 | A | [Interview questions](appendix-a-interview-questions.md) | 10% | ~800 | **Blocked** — the official question list is missing |
 
 Run `./wordcount.sh` from this folder to see the current length of each section.
@@ -40,20 +40,43 @@ the module leader.
 The section targets above add up to roughly 1,900 words excluding the appendix, which
 sits inside the recommended range if the appendix is excluded from it.
 
-**The drafted sections run well over their targets and a trimming pass is now
-required.** As of 18 November the written sections total about 3,900 words against a
-combined target of 1,900. Writing long first was deliberate, because it is easier to
-cut an argument that has been made in full than to expand a thin one, but the gap is
-now large.
+**Every section except the appendix is now written, and the draft is far over
+length.** As of 18 November the prose totals about 4,480 words against a combined
+target of roughly 1,900, and against the recorded maximum of 3,000. Writing long
+first was deliberate, because it is easier to cut an argument that has been made in
+full than to expand a thin one, but a trimming pass is now the single most important
+remaining task on the report.
 
-The three worst offenders are section 4 at 949 words against a target of 300,
-section 6 at 875 against 300, and section 2 at 577 against 450. Section 6 is harder
-to cut than it looks, since the testing section carries 15% of the marks and the two
-rendering defects it records are strong evidence; section 4 is the right place to
-start.
+| Section | Current | Target | To cut |
+| --- | --- | --- | --- |
+| 1 Introduction | 124 | 120 | — |
+| 2 Requirements and planning | 577 | 450 | ~130 |
+| 3 Design decisions | 427 | 250 | ~180 |
+| 4 Implementation | 949 | 300 | ~650 |
+| 5 Screenshots | 414 | 100 | ~310 |
+| 6 Testing | 875 | 300 | ~575 |
+| 7 Critical evaluation | 734 | 300 | ~430 |
+| 8 Conclusion | 75 | 80 | — |
 
-Run `./wordcount.sh` after each pass. Note that the limit itself is still unverified,
-so the target may change.
+Guidance for the pass, in order of priority:
+
+1. **Section 4** is the clearest target. It currently explains the code class by
+   class, and most of that belongs in the Javadoc rather than the report. The
+   lecturer's advice is that the implementation section should be short and should
+   describe how the application was implemented rather than narrate the work.
+2. **Section 5** should become captions only. The account of how the screenshots
+   were captured can be reduced to one sentence.
+3. **Section 6** is harder to cut than its size suggests. Testing carries 15% of the
+   marks and the two rendering defects are unusually strong evidence, so the
+   functional table and the defect account should survive; the approach paragraphs
+   can be compressed.
+4. **Section 7** likewise carries 15%. The limitations and the object-oriented
+   coverage are what the brief asks for directly; the list of improvements can be
+   reduced to two or three items.
+
+Note that the limit itself is still unverified, and whether captions, tables and the
+appendix count towards it is unknown, so the target may change. Run `./wordcount.sh`
+after each pass.
 
 ## Still to obtain
 
@@ -79,3 +102,10 @@ the automated checks could not have found.
 
 Sections 7 and 8 can now be written, and the interview appendix remains the only part
 blocked by something outside this repository.
+
+## Progress note — 18 November 2026, later
+
+Sections 7 and 8 are written, so every part of the report now exists except the
+interview appendix. What remains is mechanical rather than creative: the trimming
+pass described above, the four UML diagrams, formatting the references, and
+assembling the Word document.
