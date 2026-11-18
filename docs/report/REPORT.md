@@ -47,3 +47,26 @@ separation and absence of overlap in one assertion.
 All 126 self-checks pass on OpenJDK 23; see testing/PLACER-RESULTS.md, including the
 defect the small-board check found before the fix. These are still not JUnit tests and
 there is still no running game, so no functional evidence or screenshot exists yet.
+
+### Controller milestone — 18 November 2026
+The game lifecycle is now implemented, which completes the third of the four planned
+layers. The controller starts and restarts games, processes shots, counts the
+player's progress and closes the game once the fleet is destroyed.
+
+Two decisions are worth defending in the report. The first is where the game-over
+guard lives. `Board` would accept a shot at an already-destroyed fleet, and that is
+reasonable, because "this game is finished" is a fact about the session rather than a
+rule about the grid. Placing the guard in the controller keeps each class answering
+one kind of question.
+
+The second is what the controller refuses to expose. There is deliberately no
+`getBoard()` method. The interface receives the board size, the outcome of every cell
+already fired at, the running counts and whether the game is over, which is enough to
+draw the grid and announce victory, but nothing that would let the view reveal hidden
+ships. This is encapsulation chosen for a concrete reason in this game rather than as
+a general principle.
+
+158 self-checks now pass and javadoc reports no warnings; see
+testing/CONTROLLER-RESULTS.md. The remaining gap is the whole of the user interface:
+the brief's red and blue cells, mouse control and the on-screen victory message do
+not exist yet, so there is still no functional test evidence and no screenshot.

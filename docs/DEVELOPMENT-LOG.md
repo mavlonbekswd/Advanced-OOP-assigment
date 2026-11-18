@@ -31,3 +31,21 @@ Added 21 placement checks, giving 126 in total, all passing on OpenJDK 23. Also 
 in-code comments naming the OOP concepts used in `Ship`, `Board`, `ShipType` and
 `ShotResult`; the assessment asks for these explicitly and only `Coordinate` had them.
 No behaviour was changed by those comments. Controller and interface remain unbuilt.
+
+## 2026-11-18 — Game controller milestone
+Added `battleship.controller.GameController`, completing the model, service and
+controller layers. It owns starting and restarting a game, taking shots, counting
+shots and hits, and refusing play once the fleet is destroyed. It exposes no board
+object, only what an interface needs in order to draw.
+
+Written test first, in two cycles. The first checks described a controller that had
+not started a game and were watched failing on the missing class. The second
+described the shot counters, the duplicate rule, invalid input, victory and restart,
+and were watched failing on `First shot counted`, because the first version returned
+the board's outcome without recording anything.
+
+Added 32 controller checks, giving 158 in total, all passing on OpenJDK 23. Also
+cleared every outstanding javadoc warning across the project: the enum constants had
+no comments at all and several methods carried an `@return` tag with no description.
+The assessment marks javadoc explicitly, and `javadoc` now reports zero warnings.
+Only the Swing interface remains before the MVP is playable.

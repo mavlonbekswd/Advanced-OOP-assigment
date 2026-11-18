@@ -69,3 +69,29 @@ path can be exercised on a board where the fleet genuinely cannot fit.
 
 Fleet composition now has an owner. `Board` still deliberately does not police it,
 because a board is also useful in tests with one or two ships.
+
+## 18 November 2026 — Game controller
+`GameController` lives in `battleship.controller` and owns the lifecycle of a game:
+starting one, restarting, taking a shot and deciding when the game is won. It holds
+no rules about placement or hits, which stay in `Board`, and it draws nothing.
+
+What the controller adds over the board is the player's own progress. The board
+records what happened on each cell; the controller counts how many shots the player
+has taken and how many found a ship. The duplicate-shot rule matters here: a repeated
+click returns `ALREADY_SHOT` and increments neither count, so a player cannot inflate
+their score, and the interface can tell the difference between a wasted click and a
+real miss.
+
+The controller closes the game after victory. The board would happily keep accepting
+shots at a destroyed fleet, because "the game is finished" is a lifecycle fact rather
+than a board rule. Putting the guard here keeps that distinction clean and means the
+interface cannot accidentally allow a shot after the victory message appears.
+
+Deliberately, `getBoard()` does not exist. The interface is given the board size, the
+outcome of each cell already fired at, the two counts and whether the game is over.
+That is everything needed to draw the grid and nothing that would let a careless view
+reveal where the ships are.
+
+The generator is injected for the same reason it is injected into the placer: a
+seeded game is reproducible, so a test can assert an exact hit count of 16 instead of
+a range, with no test-only accessor added to production code.

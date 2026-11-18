@@ -96,3 +96,29 @@ classDiagram
 The service depends on the model; the model knows nothing about the service. The
 controller and the Swing interface are still proposals, so MVC integration remains
 pending.
+
+## Implemented controller checkpoint — 18 November 2026
+
+```mermaid
+classDiagram
+    GameController --> RandomShipPlacer : starts games with
+    GameController --> Board : owns current game
+    GameController --> ShotResult : reports outcomes
+    class GameController {
+        +GameController()
+        +GameController(RandomShipPlacer placer)
+        +newGame() void
+        +shoot(Coordinate) ShotResult
+        +isGameStarted() boolean
+        +isGameOver() boolean
+        +getBoardSize() int
+        +getShotCount() int
+        +getHitCount() int
+        +getRemainingShips() int
+        +getShots() Map
+    }
+```
+
+Three of the four planned layers now exist: model, service and controller. The view
+is still a proposal, so the sequence diagram above describes intended behaviour from
+`GameWindow` onwards and implemented behaviour from `GameController` inwards.

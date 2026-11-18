@@ -37,13 +37,22 @@ public final class Board {
     /** Creates the standard 10 by 10 board. */
     public Board() { this(DEFAULT_SIZE); }
 
-    /** @param size positive number of rows and columns */
+    /**
+     * Creates a square board of the given size.
+     *
+     * @param size positive number of rows and columns
+     * @throws IllegalArgumentException if size is not positive
+     */
     public Board(int size) {
         if (size <= 0) throw new IllegalArgumentException("Board size must be positive");
         this.size = size;
     }
 
-    /** @return number of rows and columns */
+    /**
+     * Returns the size of this board.
+     *
+     * @return number of rows and columns
+     */
     public int getSize() { return size; }
 
     /**
@@ -101,20 +110,36 @@ public final class Board {
         return result;
     }
 
-    /** @return immutable snapshot of shots; no hidden ship locations are exposed */
+    /**
+     * Returns what the player has learned so far.
+     *
+     * @return immutable snapshot of shots; no hidden ship locations are exposed
+     */
     public Map<Coordinate, ShotResult> getShots() {
         return Collections.unmodifiableMap(new LinkedHashMap<>(shots));
     }
 
-    /** @return number of placed ships */
+    /**
+     * Returns how many ships are on this board.
+     *
+     * @return number of placed ships
+     */
     public int getShipCount() { return ships.size(); }
 
-    /** @return number of sunk ships */
+    /**
+     * Returns how many ships have been destroyed.
+     *
+     * @return number of sunk ships
+     */
     public int getSunkShipCount() {
         return (int) ships.stream().filter(Ship::isSunk).count();
     }
 
-    /** @return true only for a nonempty fleet with every ship sunk */
+    /**
+     * Reports whether the game on this board has been won.
+     *
+     * @return true only for a nonempty fleet with every ship sunk
+     */
     public boolean allShipsSunk() {
         return !ships.isEmpty() && getSunkShipCount() == ships.size();
     }

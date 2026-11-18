@@ -25,6 +25,8 @@ public final class Coordinate {
     }
 
     /**
+     * Returns the row this coordinate sits on.
+     *
      * @return zero-based row index
      */
     public int getRow() {
@@ -32,6 +34,8 @@ public final class Coordinate {
     }
 
     /**
+     * Returns the column this coordinate sits on.
+     *
      * @return zero-based column index
      */
     public int getColumn() {

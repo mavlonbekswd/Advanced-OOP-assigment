@@ -8,7 +8,12 @@ package battleship.model;
  * set of named constants rather than as a class hierarchy.
  */
 public enum ShipType {
-    BATTLESHIP(4), CRUISER(3), DESTROYER(2);
+    /** The single four-cell ship. */
+    BATTLESHIP(4),
+    /** One of the two three-cell ships. */
+    CRUISER(3),
+    /** One of the three two-cell ships. */
+    DESTROYER(2);
 
     private final int length;
 
@@ -16,7 +21,11 @@ public enum ShipType {
         this.length = length;
     }
 
-    /** @return number of cells occupied by this type */
+    /**
+     * Returns how many cells a ship of this type occupies.
+     *
+     * @return number of cells occupied by this type
+     */
     public int getLength() {
         return length;
     }

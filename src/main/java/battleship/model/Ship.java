@@ -69,16 +69,33 @@ public final class Ship {
         this.positions = Collections.unmodifiableList(copy);
     }
 
-    /** @return ship type */
+    /**
+     * Returns which kind of ship this is.
+     *
+     * @return ship type
+     */
     public ShipType getType() { return type; }
 
-    /** @return immutable occupied cells in coordinate order */
+    /**
+     * Returns the cells this ship occupies.
+     *
+     * @return immutable occupied cells in coordinate order
+     */
     public List<Coordinate> getPositions() { return positions; }
 
-    /** @return count of distinct successful hits */
+    /**
+     * Returns how much of this ship has been struck.
+     *
+     * @return count of distinct successful hits
+     */
     public int getHitCount() { return hits.size(); }
 
-    /** @param cell queried cell; @return whether this ship occupies it */
+    /**
+     * Reports whether this ship covers the given cell.
+     *
+     * @param cell queried cell
+     * @return true if this ship occupies that cell
+     */
     public boolean occupies(Coordinate cell) {
         return positions.contains(Objects.requireNonNull(cell, "Cell is required"));
     }
@@ -92,6 +109,10 @@ public final class Ship {
         return occupies(cell) && hits.add(cell);
     }
 
-    /** @return true when every occupied cell has been hit */
+    /**
+     * Reports whether this ship has been destroyed.
+     *
+     * @return true when every occupied cell has been hit
+     */
     public boolean isSunk() { return hits.size() == positions.size(); }
 }

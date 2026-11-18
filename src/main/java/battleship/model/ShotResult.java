@@ -8,5 +8,12 @@ package battleship.model;
  * ships, and makes an unhandled outcome a visible omission rather than a silent one.
  */
 public enum ShotResult {
-    MISS, HIT, SUNK, ALREADY_SHOT
+    /** The cell held no part of any ship. */
+    MISS,
+    /** The cell held part of a ship that is still afloat. */
+    HIT,
+    /** The cell held the last unstruck part of a ship. */
+    SUNK,
+    /** The cell had already been fired at; nothing changed. */
+    ALREADY_SHOT
 }
