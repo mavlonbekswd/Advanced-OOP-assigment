@@ -1,72 +1,63 @@
 # Battleship development report — working draft
 
-Module: MOD004883. Author: to complete. Submission date: to verify in Canvas.
+Module MOD004883, Component 2. Author: to complete. Submission date: to verify in
+Canvas.
 
-## Introduction
-The project aims to implement a single-player Java Battleship game with a testable domain model and a mouse-controlled interface.
+**This is a draft, not a submission.** Sections marked PENDING have not been written,
+and sections marked BLOCKED cannot be written until something outside this repository
+is obtained. Nothing here should be submitted as finished work.
 
-## Planning
-See preserved initial design, requirements, architecture, proposed UML and roadmap. The original document predates this repository setup; importing it does not establish a Git creation date for that planning work.
+The report is written in Markdown, one file per section, and is assembled into the
+required Word document at the end. Everything is written in the third person, as the
+report is a description of the project rather than a diary.
 
-## Implementation
-Implemented so far: immutable Coordinate, ShipType, Ship with validated positions and hit tracking, Board with placement validation and shot processing, and a demonstration entry point. Random placement, controller and Swing interface are not implemented. Describe changes from the original plan as development occurs.
+## Sections
 
-## Testing
-The starter includes ten dependency-free Coordinate checks and 52 Ship checks, executed successfully on 14 November 2026. These are not JUnit tests. Record actual runs in the testing log. Full game functional evidence remains pending.
+| # | File | Marks | Target words | Status |
+|---|---|---|---|---|
+| 1 | [Introduction](01-introduction.md) | part of 5% | 120 | Complete |
+| 2 | [Requirements and planning](02-requirements-and-planning.md) | 25% | 450 | Prose complete; three UML diagrams pending |
+| 3 | [Design decisions](03-design-decisions.md) | part of 25% | 250 | Complete for three layers; interface pending |
+| 4 | [Implementation](04-implementation.md) | 10% | 300 | Three layers of four; final UML pending |
+| 5 | [Screenshots](05-screenshots.md) | part of 10% | 100 | **Pending** — needs the interface |
+| 6 | [Testing](06-testing.md) | 15% | 300 | Unit testing complete; functional pending |
+| 7 | [Critical evaluation](07-critical-evaluation.md) | 15% | 300 | **Pending** — needs a finished application |
+| 8 | [Conclusion](08-conclusion.md) | part of 5% | 80 | **Pending** — write last |
+| 9 | [References](09-references.md) | part of 5% | — | Pending |
+| A | [Interview questions](appendix-a-interview-questions.md) | 10% | ~800 | **Blocked** — the official question list is missing |
 
-## Critical evaluation
-Current limitation: this is a starter, not a playable game. Evaluate the completed game against each requirement later using actual evidence.
+Run `./wordcount.sh` from this folder to see the current length of each section.
 
-## Interview appendix
-Pending the lecturer's original ten questions. Student must write and understand their own answers.
+## Word limit
 
-## Submission preparation
-Pending: final class UML; annotated real screenshots; test evidence; sources; cover page; contents; figures list; captions; final Word formatting. Do not submit this scaffold as a completed report.
+A recommended length of 1,500–2,000 words with a maximum of 3,000 is recorded in the
+preserved planning document, which attributes it to the Week 4 slides. **Those slides
+are not among the available materials, so this figure has not been verified.**
+Whether appendices, references, captions and tables count towards the limit is not
+stated in any source available to this project. Both points should be confirmed with
+the module leader.
 
-### Board milestone — 15 November 2026
-Board delegates individual hit tracking to Ship and owns placement, adjacency and shot history. It copies ships to prevent outside mutations. The model has no Swing dependency. All 105 self-checks passed on Java 21 (10 Coordinate, 52 Ship, 43 Board). These harnesses remain separate from the planned JUnit and real GUI testing. See testing/BOARD-RESULTS.md for limitations.
+The section targets above add up to roughly 1,900 words excluding the appendix, which
+sits inside the recommended range if the appendix is excluded from it.
 
-### Random placement milestone — 18 November 2026
-Fleet generation is implemented as a service class separate from the model. The brief
-lists random placement among the features needed to go beyond 50%, so this is the
-first of the two selected enhancements; the mouse-controlled interface is the second
-and is not built yet.
+**The drafted sections currently run longer than their targets.** Sections 1 to 4 and
+6 together stand at about 2,100 words while their combined target is 1,220. This is
+deliberate at this stage: it is easier to cut an argument that has been made in full
+than to expand a thin one. A trimming pass is required once sections 5, 7 and 8 are
+written and the true total is known. Section 4 in particular should lose roughly half
+its length.
 
-The design point worth defending is where the rules live. The generator chooses
-positions but never judges them: it offers each candidate ship to `Board` and accepts
-the board's verdict. The separation rule therefore exists in exactly one method.
+## Still to obtain
 
-The testing approach is also worth describing in the report. `Board` hides ship
-positions, which is correct for a game where the player must not see them, and that
-left no obvious way to verify a generated fleet. Rather than weaken the class with a
-test-only accessor, the checks fire at all 100 cells and rebuild the ships as
-eight-way connected groups of hits. That reconstruction is only valid if ships never
-touch, so the expected six groups of sizes 4, 3, 3, 2, 2 and 2 prove composition,
-separation and absence of overlap in one assertion.
+1. The exact submission deadline. Only "end of Week 12" is stated in the Week 1
+   slides.
+2. Confirmation of the word limit and what counts towards it.
+3. The Word document containing the ten interview questions.
+4. Whether "two ships do not touch" is intended to include diagonal contact. This
+   project assumes it does and says so explicitly.
 
-All 126 self-checks pass on OpenJDK 23; see testing/PLACER-RESULTS.md, including the
-defect the small-board check found before the fix. These are still not JUnit tests and
-there is still no running game, so no functional evidence or screenshot exists yet.
+## Final deliverables
 
-### Controller milestone — 18 November 2026
-The game lifecycle is now implemented, which completes the third of the four planned
-layers. The controller starts and restarts games, processes shots, counts the
-player's progress and closes the game once the fleet is destroyed.
-
-Two decisions are worth defending in the report. The first is where the game-over
-guard lives. `Board` would accept a shot at an already-destroyed fleet, and that is
-reasonable, because "this game is finished" is a fact about the session rather than a
-rule about the grid. Placing the guard in the controller keeps each class answering
-one kind of question.
-
-The second is what the controller refuses to expose. There is deliberately no
-`getBoard()` method. The interface receives the board size, the outcome of every cell
-already fired at, the running counts and whether the game is over, which is enough to
-draw the grid and announce victory, but nothing that would let the view reveal hidden
-ships. This is encapsulation chosen for a concrete reason in this game rather than as
-a general principle.
-
-158 self-checks now pass and javadoc reports no warnings; see
-testing/CONTROLLER-RESULTS.md. The remaining gap is the whole of the user interface:
-the brief's red and blue cells, mouse control and the on-screen victory message do
-not exist yet, so there is still no functional test evidence and no screenshot.
+A formatted MS Word document and a separate ZIP of the Java code, submitted through
+Canvas. The Word document needs a cover page, a table of contents, a table of
+figures, numbered sections, captions on every figure and a single consistent font.
