@@ -30,4 +30,14 @@ receives the board size, the outcome of every cell already fired at, the player'
 counts and whether the game is over. That is enough to draw the grid and announce
 victory, and not enough to expose where the ships are hidden.
 
-**PENDING:** a paragraph on the interface design, once it exists.
+The interface was kept as simple as the brief allows. The grid is a panel of one
+hundred buttons, each of which reports its own position to the window; the window
+passes that position to the controller and then redraws every cell from whatever the
+controller reports. The window decides nothing, which means a fault in the rules can
+never hide inside it.
+
+One decision about the interface is worth defending. The cross-platform look and feel
+is requested at start-up rather than the system one, because some native look and
+feels ignore a button's background colour, and the brief requires cells to be shown
+in blue and red. A look and feel that honours those colours is therefore a
+requirement of the brief rather than a matter of taste.

@@ -49,3 +49,26 @@ cleared every outstanding javadoc warning across the project: the enum constants
 no comments at all and several methods carried an `@return` tag with no description.
 The assessment marks javadoc explicitly, and `javadoc` now reports zero warnings.
 Only the Swing interface remains before the MVP is playable.
+
+## 2026-11-18 — Swing interface milestone
+Added `battleship.view.CellStyle` and `battleship.view.GameWindow`, and replaced the
+placeholder `App` with one that opens the game. The application is now playable: a
+ten by ten grid of clickable cells, blue misses, red hits, a darker red for a sunk
+ship, a running status line, a victory dialog and a New Game button.
+
+The view was deliberately split in two so that part of it could be tested. `CellStyle`
+is pure data and was written test first; the checks that a miss is blue and a hit is
+red were watched failing on the missing class. `GameWindow` is not unit tested, since
+it contains no decision of its own.
+
+Running the application found two faults that no automated check could have caught.
+The marks drawn on fired-at cells first appeared as empty boxes, because the look and
+feel's font had no glyph for the typographic symbols chosen. After replacing them
+with ASCII they appeared as `...`, because a Swing button's default margin left too
+little width inside a cell this small and the text was clipped to an ellipsis. Setting
+the cell margin to zero fixed it.
+
+Captured six screenshots of the real application and recorded nine functional test
+cases. 12 new checks, 170 in total, all passing on OpenJDK 23 with no compiler or
+javadoc warnings. The evidence tool that drives the window is kept in docs/evidence,
+outside src, so it is not mistaken for application code.

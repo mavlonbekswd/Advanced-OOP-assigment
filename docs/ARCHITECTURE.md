@@ -95,3 +95,27 @@ reveal where the ships are.
 The generator is injected for the same reason it is injected into the placer: a
 seeded game is reproducible, so a test can assert an exact hit count of 16 instead of
 a range, with no test-only accessor added to production code.
+
+## 18 November 2026 — Swing interface
+The view is two classes rather than one. `CellStyle` answers a single question, what
+one cell should look like given what the player knows about it, and returns a colour
+and a one-character mark. It touches no Swing component and opens no window, so the
+colours the brief requires can be checked automatically with no display present.
+`GameWindow` builds the frame and wires each of the hundred cells to the controller.
+
+The window holds a controller and nothing else. There is no path from the interface
+to a board, so the view cannot read hidden ship positions even by accident. On every
+click it asks the controller to take the shot and then redraws every cell from the
+controller's reported state, rather than trying to update one cell in place. Redrawing
+everything is slightly wasteful and much harder to get wrong.
+
+Cells already fired at are disabled rather than merely ignored, and the whole grid is
+disabled once the game is won, so the controller's rules are reflected in what the
+player can physically click.
+
+The cross-platform look and feel is requested at start-up. Some native look and feels
+ignore a button's background colour, and the brief requires blue and red cells, so
+this is a requirement rather than a preference. Two rendering faults were found only
+by looking at the running application: a font with no glyph for the chosen symbols,
+and a default button margin that clipped a single character to an ellipsis. Both are
+recorded in testing/GUI-RESULTS.md.

@@ -122,3 +122,32 @@ classDiagram
 Three of the four planned layers now exist: model, service and controller. The view
 is still a proposal, so the sequence diagram above describes intended behaviour from
 `GameWindow` onwards and implemented behaviour from `GameController` inwards.
+
+## Implemented view checkpoint — 18 November 2026
+
+```mermaid
+classDiagram
+    App --> GameWindow : opens
+    App --> GameController : creates
+    GameWindow --|> JFrame
+    GameWindow --> GameController : sends clicks
+    GameWindow --> CellStyle : asks how to draw
+    CellStyle --> ShotResult : reads state
+    class GameWindow {
+        +GameWindow(GameController controller)
+        -buildGrid() JPanel
+        -buildCell(int, int) JButton
+        -buildControls() JPanel
+        -fireAt(Coordinate) void
+        -refresh() void
+        -statusText() String
+        -announceVictory() void
+    }
+    class CellStyle {
+        +colourFor(ShotResult) Color
+        +labelFor(ShotResult) String
+    }
+```
+
+All four planned layers now exist. The sequence diagram earlier in this document
+describes behaviour that is now implemented end to end rather than proposed.

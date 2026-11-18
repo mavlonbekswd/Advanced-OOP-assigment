@@ -50,7 +50,17 @@ session rather than a rule about the grid.
 
 ## 4.4 The user interface
 
-**PENDING — not yet implemented.**
+Two classes make up the view. `CellStyle` decides how a single cell should look,
+returning a colour and a one-character mark for each possible state. It holds no
+components and opens no window, which is what allows the colours the brief requires
+to be checked automatically with no display present.
+
+`GameWindow` builds the frame: a status line, a grid of one hundred buttons and a New
+Game button. Each cell button is given a listener that reports its own row and column
+to the window, which passes them to the controller and then redraws the whole grid
+from the controller's state. Cells already fired at are disabled, so a repeated click
+is impossible rather than merely ignored, and the whole grid is disabled once the game
+has been won.
 
 ## 4.5 Object-oriented concepts used
 
@@ -66,12 +76,18 @@ matter, a set for hits because a cell can only be struck once, and a map from ce
 outcome for the shot history because the duplicate rule is a question of whether a
 key is already present.
 
-**PENDING:** interfaces, inheritance and polymorphism are not yet demonstrated. They
-are expected to arise naturally in the interface layer through event listeners.
+Interfaces appear in the view. Each cell is given an `ActionListener`, which is the
+callback interface Swing uses for events: the window supplies the behaviour and the
+toolkit decides when to run it. Inheritance appears in `GameWindow`, which extends
+`JFrame` in order to be a window while adding the behaviour of this particular one,
+and polymorphism appears wherever Swing treats those listeners and components through
+their declared types without knowing what this application put behind them.
 
 ## 4.6 Final class model
 
-**PENDING — diagram must be drawn once the interface exists.**
+**PENDING — the diagram must still be drawn.** The classes and their relationships
+are recorded in `docs/architecture/UML.md`, which now covers all four layers: the
+model, the generator, the controller and the view.
 
 ## 4.7 Differences from the initial plan
 
@@ -87,3 +103,7 @@ dependencies; this is discussed honestly in section 6.
 The initial plan did not say where the game-over guard would live. It was placed in
 the controller rather than the board once the distinction between a session fact and
 a grid rule became clear during implementation.
+
+The initial plan treated the interface as a single class. It became two: the window
+itself and a separate class holding the appearance of a cell. The split was made so
+that the colours the brief requires could be tested without opening a window.

@@ -45,9 +45,38 @@ before it chooses a position.
 
 ## 6.3 Functional testing
 
-**PENDING — blocked on the interface.**
+Unit checks cannot show that the interface behaves correctly, so the finished
+application was also tested as a player would use it. Each case below was carried out
+on the running game by clicking the grid, and the result was confirmed both on screen
+and in the captured images referred to in section 5.
 
-This section needs a table of test cases carried out by hand on the running
-application: each row giving the action, the expected result and the observed result.
-The cases should at least cover clicking an empty cell, clicking a ship, clicking the
-same cell twice, sinking a ship, sinking the whole fleet and pressing Restart.
+| # | Action | Expected result | Observed result |
+| --- | --- | --- | --- |
+| F1 | Start the application | A ten by ten grid of unexplored cells, status showing no shots and six ships | As expected (Figure 1) |
+| F2 | Click a cell holding no ship | Cell turns blue, shot count rises by one, hit count unchanged | As expected (Figure 2) |
+| F3 | Click a cell holding a ship | Cell turns red, both shot and hit counts rise by one | As expected (Figure 2) |
+| F4 | Click a cell already fired at | Nothing changes; no count moves | As expected; the cell is disabled after its first shot |
+| F5 | Hit the last remaining cell of a ship | Cells of that ship turn dark red, ships remaining falls by one, status shows `Sunk!` | As expected (Figure 3) |
+| F6 | Sink the entire fleet | A victory dialog appears and the status line reports the total number of shots | As expected (Figures 4 and 5) |
+| F7 | Click any cell after victory | Nothing happens | As expected; the whole grid is disabled once the game is over |
+| F8 | Press New Game | Board and both counters are cleared and a new fleet is generated | As expected (Figure 6) |
+| F9 | Inspect the fleet revealed at the end of a game | One line of four cells, two of three and three of two, none touching | As expected (Figure 4) |
+
+Case F9 is worth noting because it checks a requirement on screen that is otherwise
+only visible to the automated checks. The layout revealed at the end of a completed
+game can be counted directly in Figure 4, and it matches the fleet the brief
+specifies.
+
+### A defect found by functional testing
+
+The first working version of the interface displayed a typographic symbol on each
+cell that had been fired at. On screen every one of these appeared as an empty box,
+because the font used by the chosen look and feel had no glyph for them. Replacing
+them with plain ASCII characters removed the empty boxes, but revealed a second
+problem: the marks then showed as `...` instead. A button keeps a wide default
+margin, which in a cell of this size left too little room for the character, so the
+text was being shortened to an ellipsis. Setting the cell margin to zero fixed it.
+
+Neither fault could have been found by the unit checks, which can confirm that a
+colour is blue but not that a character is legible on screen. This is a concrete
+illustration of why functional testing is needed alongside unit testing.

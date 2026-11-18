@@ -1,24 +1,42 @@
 package battleship;
 
-import battleship.model.Coordinate;
+import battleship.controller.GameController;
+import battleship.view.GameWindow;
+
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
- * Temporary entry point for demonstrating the first domain class.
- * This will later launch the Battleship GUI.
+ * Entry point: starts the Battleship game.
+ *
+ * <p>OOP: Abstraction. This class knows only that a controller runs a game and a
+ * window shows one. It contains no rule and no drawing of its own.
  */
 public final class App {
+
     private App() {
         // Utility entry point: no instance is needed.
     }
 
     /**
-     * Prints a sample board coordinate.
+     * Opens the game window on Swing's event dispatch thread.
+     *
+     * <p>The cross-platform look and feel is requested deliberately. Some native
+     * look and feels ignore a button's background colour, and the brief requires
+     * cells to be shown in blue and red, so a look and feel that honours those
+     * colours is a requirement rather than a preference.
      *
      * @param args command-line arguments (unused)
      */
     public static void main(String[] args) {
-        Coordinate target = new Coordinate(3, 5);
-        System.out.println("Target: " + target);
-        System.out.println("On 10x10 board: " + target.isWithin(10));
+        SwingUtilities.invokeLater(() -> {
+            try {
+                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            } catch (ReflectiveOperationException | UnsupportedOperationException
+                    | javax.swing.UnsupportedLookAndFeelException ignored) {
+                // The default look and feel is acceptable; the game still runs.
+            }
+            new GameWindow(new GameController()).setVisible(true);
+        });
     }
 }
