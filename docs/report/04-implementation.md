@@ -27,6 +27,9 @@ component, which lets the required colours be checked with no display. `GameWind
 gives each cell a listener reporting its own position and redraws the grid from the
 controller after every shot.
 
+Two faults appeared only when the finished application was run, both concerning the
+mark drawn on a cell rather than its colour; they are described in section 6.2.
+
 ## 4.2 Object-oriented concepts
 
 **Encapsulation:** every field private, collections copied in and returned
@@ -56,3 +59,66 @@ cost given in section 6.2. The plan did not say where the game-over guard would 
 it went to the controller once the difference between a session fact and a grid rule
 became clear. Finally, the plan treated the interface as one class, and it became
 two, so the required colours could be tested without opening a window.
+
+<!-- UZ -->
+
+---
+
+## O'zbekcha (tekshirish uchun — hisobotga kirmaydi)
+
+### 4.1 Ilova qanday qurilgan
+
+To'qqiz klass 3-bo'limda tasvirlangan to'rt qatlamda joylashgan.
+
+Modelda `Coordinate` — `equals` va `hashCode` ni qayta aniqlagan o'zgarmas katak
+manzili; busiz takroriy o'q tanib olinmas edi. `Ship` o'z turini, kataklarini va shu
+paytgacha tegilgan kataklarni saqlaydi, va uning konstruktori to'g'ri uzunlikdagi
+to'g'ri, uzluksiz chiziq bo'lmagan hamma narsani rad etadi — shuning uchun noto'g'ri
+holatdagi kema umuman mavjud bo'la olmaydi. `Board` kemalar va o'qlar tarixiga
+egalik qiladi va joylashuv bo'yicha yagona hokimiyat: chegaradan tashqaridagi yoki
+mavjud kemadan bir qator va bir ustun ichidagi har qanday katakni rad etadi — diagonal
+qoida aynan shunday majburlanadi.
+
+`RandomShipPlacer` flotni quradi, eng uzun kemadan boshlab, chunki to'rt katakli
+Battleship'ni bo'sh taxtaga qo'yish ancha kam urinish sarflaydi. Qayta urinish har
+kema va har taxta uchun cheklangan, va urinishlar tugaganda cheksiz aylanish emas,
+istisno chiqariladi. `GameController` o'yinni boshlaydi va qayta boshlaydi, o'qlarni
+taxtaga uzatadi, o'q va tegishlarni alohida sanaydi, va flot yo'q qilingach keyingi
+o'qlarni rad etadi.
+
+Interfeysda `CellStyle` bitta katakning rangi va belgisini qaytaradi va hech qanday
+komponentga tegmaydi — aynan shu talab qilingan ranglarni displeysiz tekshirish
+imkonini beradi. `GameWindow` har bir katakka o'z pozitsiyasini xabar qiluvchi listener
+beradi va har o'qdan keyin to'rni kontroller holatidan qayta chizadi.
+
+### 4.2 Ishlatilgan OOP tushunchalari
+
+**Encapsulation:** hamma maydon private, kolleksiyalar nusxalanib kiradi va
+o'zgartirib bo'lmaydigan holda qaytadi, kemalar hech qachon oshkor qilinmaydi.
+**Abstraction:** `ShipType` va `ShotResult` dasturga kerak narsani nomlaydi, qanday
+saqlanishini oshkor qilmasdan. **Inheritance:** `GameWindow extends JFrame`.
+**Polymorphism:** Swing listener va komponentlarni ularning e'lon qilingan turlari
+orqali ishlatadi. **Interfaces:** har katakda `ActionListener`. **State:** kemaning
+tegishlari va o'qlar tarixi. **Constructors:** to'g'rilikni kafolatlash uchun.
+**Overloading:** `Board` ning ikkita konstruktori. **Overriding:** `equals`,
+`hashCode`, `toString`. **Architectural pattern:** MVC. **Kolleksiya tanlovi:**
+pozitsiyalar uchun list, chunki tartib muhim; tegishlar uchun set, chunki katakka bir
+marta tegiladi; tarix uchun map, chunki takror qoidasi kalit bor-yo'qligi masalasi.
+
+Abstract class, ataylab qo'yilgan design pattern va mutator metodlar yo'q; har biri
+7.4-bo'limda izohlangan.
+
+### 4.3 Yakuniy class model
+
+**Hali chizilmagan**, to'rt qatlamni qamrashi kerak.
+
+### 4.4 Dastlabki rejadan farqlar
+
+To'rtta o'zgarish qilindi. Reja kema turlari subclass bo'ladimi degan savolni ochiq
+qoldirgan edi; buning o'rniga enum bilan birikkan bitta klass ishlatildi (sabab
+3-bo'limda). Reja JUnit kutgan edi; o'rniga oddiy Java harness'lar ishlatildi, bu
+hech qanday tashqi bog'liqlik qoldirmadi — narxi 6.2-da. Reja o'yin tugaganini
+tekshiruvchi qulf qayerda turishini aytmagan edi; u kontrollerga ketdi, sessiya fakti
+bilan to'r qoidasi orasidagi farq aniq bo'lgach. Nihoyat, reja interfeysni bitta klass
+deb hisoblagan edi, u ikkita bo'ldi — shunda talab qilingan ranglarni oyna ochmasdan
+testlash mumkin bo'ldi.

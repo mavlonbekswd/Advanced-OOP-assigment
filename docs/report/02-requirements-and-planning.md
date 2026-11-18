@@ -59,3 +59,59 @@ window and controller to the board and back.
 
 **PENDING — diagram to be drawn.** This must show the model as planned, not the
 final code; the differences are in section 4.4.
+
+<!-- UZ -->
+
+---
+
+## O'zbekcha (tekshirish uchun — hisobotga kirmaydi)
+
+### 2.1 Briefdan olingan talablar
+
+Brief o'yin qoidalarini qat'iy belgilaydi va ular muhokama qilinmaydigan deb qabul
+qilindi. O'yinchiga 10x10 to'r ko'rsatiladi; unda to'rt katakli bitta Battleship, uch
+katakli ikkita Cruiser va ikki katakli uchta Destroyer yashiringan — ya'ni yuz
+katakdan o'n oltitasini egallagan olti kema. Kompyuter ularni shunday joylashtirishi
+kerakki, hech ikkitasi ustma-ust tushmasin va hech ikkitasi tegmasin. Tanlangan katak
+bo'sh bo'lsa ko'k, kema ustida bo'lsa qizil bo'ladi, va hamma kema cho'kkanda o'yin
+tugaydi.
+
+Brief ikkita chegara ham belgilaydi. Kemalar doim bir joyda turadigan va koordinata
+qo'lda kiritiladigan oddiy o'yin 40% dan yuqori ball ololmaydi; 50% dan oshish uchun
+bir nechta kengaytma sanab o'tilgan. Ulardan ikkitasi tanlandi: tasodifiy
+joylashtirish va sichqoncha bilan boshqariladigan interfeys — ikkalasini ham 4-hafta
+ma'ruzasi kutilayotgan deb ataydi. Qiyinlik darajalari va ikki o'yinchi rejimi ataylab
+keyinga qoldirildi, chunki to'liq ishlaydigan kichikroq ilova tugallanmagan
+kattaroqdan qimmatliroq deb baholandi.
+
+Ikkita masalada qaror qabul qilish kerak bo'ldi. Birinchidan, brief kemalar tegmasligi
+kerak deydi, lekin burchak bilan uchrashish tegish hisoblanadimi — aytmaydi; bu loyiha
+diagonal tegishni ham tegish deb hisoblaydi. Qat'iyroq qoida yumshoqroq qoida rad
+etadigan joylashuvni hech qachon yarata olmaydi, shuning uchun u ikkala talqinda ham
+xavfsiz, va uni testlash oson. Ikkinchidan, 3-hafta ma'ruzasi xuddi shu o'yinni boshqa
+nomdagi flot bilan ko'rsatadi. Topshiriq briefi ustun manba, shuning uchun uning flot
+tarkibi tanlandi.
+
+### 2.2 Ish qanday rejalashtirilgan
+
+Ish bir kishi tomonidan bajarilgani uchun, 5-hafta ma'ruzasi maslahat berganidek,
+rivojlanish iterativ jamoa jarayoni emas, balki waterfall ketma-ketligida bordi:
+talablar, keyin arxitektura, keyin kod, keyin har bir qism tugagach uning testlari.
+
+Hech qanday ilova kodi yozilishidan oldin rejalashtirish hujjati tayyorlandi. Unda
+talablar yozilgan, brief talab qilgan narsa bilan loyiha o'zi qo'shgan narsa
+ajratilgan, tasdiqlash kerak bo'lgan taxminlar sanab o'tilgan va dastlabki arxitektura
+belgilangan. U o'zgarishsiz saqlangan, shuning uchun reja bilan natija orasidagi
+farqni 4.4-bo'limda halol ko'rsatish mumkin.
+
+Ish har biri alohida tugatilib, alohida testlanadigan bosqichlarga bo'lindi: model,
+generator, kontroller, keyin interfeys. Har biri keyingisidan oldin o'z tekshiruvlaridan
+o'tishi shart edi, shunda qoidalardagi xato interfeysdagi xato bilan aralashib
+ketmaydi.
+
+### 2.3-2.5 UML modellari
+
+**Hali chizilmagan.** Use case: aktyor — odam o'yinchi; use case'lar — o'yinni boshlash,
+nishon tanlash, tegdi/tegmadi natijasini ko'rish, g'alabani ko'rish, qayta boshlash.
+Sequence: bitta o'qning o'yinchidan oyna va kontroller orqali taxtaga borib qaytishi.
+Class: rejadagi model (yakuniy kod emas; farqlar 4.4-da).

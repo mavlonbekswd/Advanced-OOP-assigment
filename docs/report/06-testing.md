@@ -55,3 +55,57 @@ plain ASCII revealed a second fault: the marks then showed as `...`, because a S
 button's wide default margin left too little room for one character. Setting the cell
 margin to zero fixed it. Unit checks can confirm a colour is blue but not that a
 character is legible, which is why both kinds of testing were needed.
+
+<!-- UZ -->
+
+---
+
+## O'zbekcha (tekshirish uchun — hisobotga kirmaydi)
+
+### 6.1 Unit testlash
+
+Testlash rivojlanish bilan birga bordi: har bir klass keyingisi yozilishidan oldin
+tekshirildi, va har bir tekshiruv uni qanoatlantiradigan kod yozilishidan **oldin**
+yiqilgan holda ko'rildi — chunki hech qachon yiqilmagan tekshiruv noto'g'ri narsani
+tekshirayotgan bo'lishi mumkin. Tekshiruvlar JUnit emas, `main` metodli oddiy Java
+klasslari; bu loyihani tashqi bog'liqliklardan xoli qoldiradi, lekin ular tan olingan
+framework emas.
+
+Yuz yetmish tekshiruv o'tadi: `Coordinate` uchun 10, `Ship` uchun 52, `Board` uchun
+43, `RandomShipPlacer` uchun 21, `GameController` uchun 32 va `CellStyle` uchun 12 —
+to'g'ri va noto'g'ri qurish, to'rt chegara, ustma-ustlik, sakkiz yo'nalishdagi tegish,
+tegishlar, o'tkazib yuborishlar, takroriy o'qlar, cho'kish, g'alaba va qayta
+boshlashni qamraydi.
+
+Generator alohida muammo tug'dirdi. `Board` kemalar qayerdaligini yashiradi — o'yin
+uchun to'g'ri, lekin bu yaratilgan flotni tekshirishning oddiy yo'lini qoldirmadi.
+Klassni faqat testga kerak bo'ladigan getter bilan zaiflashtirish o'rniga,
+tekshiruvlar yuz katakning hammasiga o't ochadi va kemalarni bir-biriga tegib turgan
+tegish kataklari guruhlari sifatida qayta tiklaydi. Bu faqat kemalar tegmasa
+to'g'ri — shuning uchun o'lchamlari 4, 3, 3, 2, 2, 2 bo'lgan oltita guruh topilishi
+flot tarkibini, ustma-ustlik yo'qligini va ajralish qoidasini bir vaqtda isbotlaydi.
+
+Tekshiruvlarni oldin yozish haqiqiy nuqson ham topdi: Battleship sig'maydigan kichik
+taxta Java kutubxonasi ichidan `IllegalArgumentException: bound must be positive`
+chiqardi, chunki `Random.nextInt` ga musbat bo'lmagan chegara borgan edi. Endi
+generator taxtadan uzun kemani avval rad etadi.
+
+### 6.2 Funksional testlash
+
+Unit tekshiruvlar interfeys to'g'ri ishlashini ko'rsata olmaydi, shuning uchun tayyor
+o'yin o'yinchi kabi to'rni bosib ham testlandi. To'qqizta holat (F1–F9) jadvalda:
+ilovani ishga tushirish, bo'sh katakni bosish, kema katagini bosish, allaqachon o'q
+uzilgan katakni bosish, kemaning oxirgi katagiga tegish, butun flotni cho'ktirish,
+g'alabadan keyin bosish, New Game bosish va oxirida ochilgan flotni sanash.
+Hammasi muvaffaqiyatli o'tdi.
+
+F9 avtomatik tekshiruvlardan boshqa holda ko'rinmaydigan talabni ekranda tasdiqlaydi.
+
+Shu yo'l bilan ikkita nuqson topildi, ikkalasi ham hamma avtomatik tekshiruvga
+ko'rinmas edi. Birinchi interfeys har bir o'q uzilgan katakka tipografik belgi
+chizardi va ularning hammasi bo'sh kvadrat bo'lib ko'rindi, chunki tanlangan look and
+feel shriftida u belgilar uchun glif yo'q edi. Oddiy ASCII'ga o'tish ikkinchi
+nuqsonni ochdi: belgilar `...` bo'lib ko'rindi, chunki Swing tugmasining keng
+standart margin'i bitta harfga ham joy qoldirmagan edi. Katak margin'ini nolga
+qo'yish buni tuzatdi. Unit tekshiruv rang ko'k ekanini tasdiqlay oladi, lekin harf
+o'qilishini emas — ikkala tur test ham shuning uchun kerak bo'ldi.

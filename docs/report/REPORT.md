@@ -11,6 +11,15 @@ The report is written in Markdown, one file per section, and is assembled into t
 required Word document at the end. Everything is written in the third person, as the
 report is a description of the project rather than a diary.
 
+**Each section file ends with an Uzbek block** after an `<!-- UZ -->` marker, so the
+content can be checked in Uzbek before it goes into the Word document. Those blocks
+are for review only: they are not part of the report and `wordcount.sh` stops
+counting when it reaches the marker.
+
+**`long/` holds the earlier 4,476-word draft**, kept as an archive. The Uzbek block in
+each of those files explains what that longer version contains that the submitted one
+does not, and whether it is worth restoring if the word limit allows.
+
 ## Sections
 
 | # | File | Marks | Target words | Status |
