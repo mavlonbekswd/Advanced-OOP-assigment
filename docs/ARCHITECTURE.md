@@ -45,3 +45,27 @@ The starter has 10 checks executed in a standalone harness (not JUnit). Preserve
 
 ## 15 November 2026 — Board implementation
 Board owns private copies of placed ships and a Map of shot coordinates to original outcomes. A default constructor creates a 10×10 board; a size overload supports small test boards. Placement rejects bounds violations, overlap and all eight neighbouring directions. Failed placement and invalid shots leave state unchanged. Setup closes after the first valid shot. Empty boards cannot be fired on or count as victory. ShotResult distinguishes MISS, HIT, SUNK and ALREADY_SHOT. Read access exposes an immutable snapshot of shot history, never mutable ships or their hidden positions. Exact fleet composition remains the setup service responsibility. The future controller must stop accepting new shots after victory; Board retains domain-level shot processing.
+
+## 18 November 2026 — Random fleet placement
+`RandomShipPlacer` lives in a new `battleship.service` package, matching the layer
+split planned above. It holds the fleet the brief requires as a fixed list, longest
+ship first, because placing the four-cell Battleship while the board is empty wastes
+far fewer attempts than placing it last.
+
+The service asks `Board.canPlaceShip` rather than re-checking bounds, overlap or
+adjacency. Those rules stay stated once, which is the DRY principle from Week 7, and
+it means a change to the separation rule cannot leave the generator disagreeing with
+the board.
+
+`Random` is a constructor parameter. An unseeded default is offered for the game, and
+a seeded instance makes a fleet reproducible in a test. This is dependency injection
+used for a concrete reason, not to demonstrate a pattern: without it the only way to
+test the generator would be to add a test-only accessor to production code.
+
+Retrying is bounded in two places, per ship and per whole board, and exhaustion raises
+`IllegalStateException`. A random generator that can fail must say so rather than
+block the application. `createBoard(int)` overloads the standard call so this failure
+path can be exercised on a board where the fleet genuinely cannot fit.
+
+Fleet composition now has an owner. `Board` still deliberately does not police it,
+because a board is also useful in tests with one or two ships.

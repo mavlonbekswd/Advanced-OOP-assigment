@@ -11,3 +11,23 @@ Added ShipType and Ship, immutable validated positions, distinct hit tracking an
 
 ## 2026-11-15 — Board domain milestone
 Implemented Board and ShotResult, copied ship ownership, bounds and diagonal separation rules, immutable shot snapshots, setup closure after first shot, duplicate detection and nonempty-fleet victory checks. Ran 10 Coordinate, 52 Ship and 43 Board checks successfully on Java 21. Random fleet generation is next; no playable GUI yet.
+
+## 2026-11-18 — Random fleet placement milestone
+Added `battleship.service.RandomShipPlacer`, the first class outside the model
+package. It owns the required fleet composition and chooses random positions, while
+`Board` stays the only authority on whether a placement is legal. The source of
+randomness is injected through a constructor so fleets are reproducible from a seed.
+Generation is bounded: 200 position attempts per ship and 100 whole-board attempts,
+after which an `IllegalStateException` is raised instead of looping.
+
+Written test first. The checks were written against the public board API before the
+class existed, and the compilation failure naming the missing class was observed. A
+later check, that a board too small to hold the Battleship fails cleanly, exposed a
+real defect: the generator passed a non-positive bound to `Random.nextInt` and
+surfaced `IllegalArgumentException: bound must be positive` from inside the JDK. That
+failure was observed before the fix.
+
+Added 21 placement checks, giving 126 in total, all passing on OpenJDK 23. Also added
+in-code comments naming the OOP concepts used in `Ship`, `Board`, `ShipType` and
+`ShotResult`; the assessment asks for these explicitly and only `Coordinate` had them.
+No behaviour was changed by those comments. Controller and interface remain unbuilt.

@@ -73,4 +73,26 @@ classDiagram
     }
 ```
 
-Earlier diagrams remain proposed architecture. This checkpoint describes the implemented model; fleet generation and MVC integration are still pending.
+Earlier diagrams remain proposed architecture.
+
+## Implemented service checkpoint — 18 November 2026
+
+```mermaid
+classDiagram
+    RandomShipPlacer --> Board : fills
+    RandomShipPlacer --> Ship : builds candidates
+    RandomShipPlacer --> ShipType : fleet composition
+    class RandomShipPlacer {
+        +RandomShipPlacer()
+        +RandomShipPlacer(Random random)
+        +createBoard() Board
+        +createBoard(int size) Board
+        -fillFleet(Board) boolean
+        -placeOne(Board, ShipType) boolean
+        -randomCells(int, int) List~Coordinate~
+    }
+```
+
+The service depends on the model; the model knows nothing about the service. The
+controller and the Swing interface are still proposals, so MVC integration remains
+pending.

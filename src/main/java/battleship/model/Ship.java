@@ -10,6 +10,21 @@ import java.util.Set;
 /**
  * A placed, straight ship with immutable positions and encapsulated hit state.
  * Board bounds and relationships to other ships are the Board's responsibility.
+ *
+ * <p>OOP: Encapsulation. The occupied cells and the set of recorded hits are
+ * private; callers receive an unmodifiable view and cannot corrupt a ship's state.
+ *
+ * <p>OOP: Composition over inheritance. A ship holds a {@link ShipType} instead of
+ * extending a base class, because the three types currently differ only by length
+ * and add no distinct behaviour that a subclass would override.
+ *
+ * <p>OOP: Constructors and state. The constructor is the only place a ship can be
+ * given its shape, and it rejects every invalid shape, so no object of this class
+ * can exist in an illegal state.
+ *
+ * <p>OOP: Choice of collection. Positions are a List because order and contiguity
+ * matter; hits are a Set because a cell can only be struck once, which gives
+ * duplicate-hit handling for free.
  */
 public final class Ship {
     private final ShipType type;

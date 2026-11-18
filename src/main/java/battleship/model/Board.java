@@ -11,8 +11,24 @@ import java.util.Objects;
  * Owns placed ships and shot history on a square board.
  * Ships may not touch, including diagonally. Placement closes after the first shot.
  * Fleet composition is left to the game setup service.
+ *
+ * <p>OOP: Encapsulation and information hiding. The ships are private and are never
+ * handed out, so the interface cannot read hidden positions and reveal them to the
+ * player; only the history of shots already taken is exposed, as a copy.
+ *
+ * <p>OOP: Abstraction. This class is the single authority on what counts as a legal
+ * placement and what a shot means, so the generator, controller and interface state
+ * those rules nowhere (DRY).
+ *
+ * <p>OOP: Overloading. Two constructors give the standard 10 by 10 game board and an
+ * arbitrary size used by tests.
+ *
+ * <p>OOP: Choice of collection. A Map from cell to outcome records shots, because
+ * the duplicate-shot rule is a question of key presence; a LinkedHashMap preserves
+ * the order in which the player fired.
  */
 public final class Board {
+    /** Rows and columns on the standard board required by the assignment. */
     public static final int DEFAULT_SIZE = 10;
     private final int size;
     private final List<Ship> ships = new ArrayList<>();

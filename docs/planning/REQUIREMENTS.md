@@ -4,12 +4,12 @@ Source: supplied `For-Assesment-task-Only.txt`, Part A and Part B. Lecture claim
 
 | ID | Requirement | Status |
 |---|---|---|
-| FR01 | 10 × 10 hidden board | Planned |
-| FR02 | 1 Battleship length 4, 2 Cruisers length 3, 3 Destroyers length 2 | Planned |
-| FR03 | No overlap or touching | Planned |
-| FR04 | Blue miss, red hit | Planned |
-| FR05 | End when all ships sink | Planned |
-| MVP01 | Random placement | Selected enhancement |
+| FR01 | 10 × 10 hidden board | Model complete; no interface yet |
+| FR02 | 1 Battleship length 4, 2 Cruisers length 3, 3 Destroyers length 2 | Complete and tested in RandomShipPlacer |
+| FR03 | No overlap or touching | Complete and tested in Board, enforced for generated fleets |
+| FR04 | Blue miss, red hit | Outcomes modelled as ShotResult; colours need the GUI |
+| FR05 | End when all ships sink | Board.allShipsSunk complete; needs the controller |
+| MVP01 | Random placement | Selected enhancement, implemented 18 Nov 2026 |
 | MVP02 | Mouse-controlled Swing GUI | Selected enhancement |
 | MVP03 | Duplicate shots do not change counters; restart clears state | Design choice |
 
