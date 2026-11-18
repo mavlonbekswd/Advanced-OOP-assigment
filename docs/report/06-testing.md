@@ -34,19 +34,8 @@ refuses a ship longer than the board first.
 ## 6.2 Functional testing
 
 Unit checks cannot show the interface behaves correctly, so the finished game was
-also tested by clicking the grid as a player would.
-
-| # | Action | Expected | Observed |
-| --- | --- | --- | --- |
-| F1 | Start the application | 100 unexplored cells, no shots, six ships | Pass, Fig. 1 |
-| F2 | Click an empty cell | Blue; shots +1, hits unchanged | Pass, Fig. 2 |
-| F3 | Click a ship cell | Red; shots +1, hits +1 | Pass, Fig. 2 |
-| F4 | Click a cell already fired at | Nothing changes | Pass; cell disabled |
-| F5 | Hit a ship's last cell | Dark red, ships left falls, `Sunk!` | Pass, Fig. 3 |
-| F6 | Sink the whole fleet | Victory dialog and total shots | Pass, Figs. 4, 5 |
-| F7 | Click after victory | Nothing happens | Pass; grid disabled |
-| F8 | Press New Game | Board and counters cleared, new fleet | Pass, Fig. 6 |
-| F9 | Count the revealed fleet | One 4, two 3s, three 2s, none touching | Pass, Fig. 4 |
+also tested by clicking the grid as a player would. The ten cases that were run are
+listed in Appendix B.
 
 Two defects were found this way, both invisible to every automated check. The first
 interface drew a typographic symbol on each fired-at cell and every one appeared as

@@ -46,7 +46,7 @@ fault in the interface.
 
 ## 2.3 Initial use case model
 
-*Figure B — `docs/diagrams/figure-B-use-case-model.png`*
+*Figure 1 — `docs/diagrams/figure-B-use-case-model.png`*
 
 The only actor is the human player, who starts a game, selects a target, sees hit or
 miss feedback, sees victory and restarts. Placing the fleet at random is not
@@ -56,7 +56,7 @@ connected to the actor.
 
 ## 2.4 Initial sequence model
 
-*Figure C — `docs/diagrams/figure-C-sequence-model.png`*
+*Figure 2 — `docs/diagrams/figure-C-sequence-model.png`*
 
 The diagram follows one shot. The player clicks a cell, the window asks the
 controller to shoot, and the controller either refuses because the game is already
@@ -68,7 +68,7 @@ and the end of the game are where most of the controller's behaviour lives.
 
 ## 2.5 Initial class model
 
-*Figure A — `docs/diagrams/figure-A-initial-class-model.png`*
+*Figure 3 — `docs/diagrams/figure-A-initial-class-model.png`*
 
 This is the model as it was planned, not the finished code. `Board` composes six
 ships, a ship is made of coordinates, a placer fills a board, a controller drives

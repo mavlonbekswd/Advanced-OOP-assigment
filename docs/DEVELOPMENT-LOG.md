@@ -125,3 +125,41 @@ wrote, dashed grey for what is outside it (Swing's JFrame, and the use case the
 player never performs), and a filled actor. Nothing depends on colour alone, so the
 figures still read when printed in black and white. The earlier black and white
 exports are kept in docs/diagrams/bw.
+
+## 18 November 2026, evening — references, figure numbering and the Word document
+
+The references were written in Harvard form. Before citing any lecture, the slide
+files were opened and searched to confirm that the claim attributed to them is
+actually there: Week 3 on the ship hierarchy, Week 4 on the word limit and the
+extensions, Week 5 on documentation, Week 6 on the MVC example and on the difference
+between functional and non-functional testing, Week 7 on DRY. Two vague citations in
+section 3 that said only "the lectures" now name Week 6 and Week 7. Weeks 1, 2, 8 and
+9 were read during the module but are not cited, so they are not listed.
+
+Every figure was renumbered into one sequence, 1 to 11, so that Word can build a
+table of figures. The diagram files keep their letters A to D; the mapping is in
+`docs/diagrams/README.md`.
+
+A screenshot turned out to be worthless as evidence. `06-after-restart.png` is
+byte-identical to `01-new-game.png` — which is correct behaviour, since a cleared
+board looks exactly like a board that has never been played, but it means the old
+caption, "a fresh fleet is hidden in new positions", claimed something the picture
+cannot show. `Capture.java` was extended to play the second game to its end as well,
+and the new `07-second-victory-board.png` shows a different fleet in different cells,
+won in ninety-two shots. That is the report's visible evidence for random placement,
+and it is recorded as functional test case F10. The first attempt at the capture
+appeared to do nothing; the cause was only that the second game needs longer than the
+1.5 seconds the first one was given before the window is photographed.
+
+`build-docx.js` assembles the submission document: cover page, table of contents,
+table of figures, numbered headings, eleven captioned figures, Arial throughout, page
+numbers, and the interview questions and functional tests as appendices A and B. The
+captions use Word SEQ fields so the table of figures can collect them, which means
+the fields have to be updated once when the document is first opened.
+
+Three of the four planned trims were made in the process: the functional test table
+moved to Appendix B, section 4.2 became a table, and the screenshot commentary became
+figure captions. Sections 1 to 8 now come to 2,670 words. The fourth trim, cutting
+the requirements in section 2.1, was not made, because planning carries 25%.
+
+All 170 self-checks still pass, and `javac -Xlint:all` is clean.

@@ -32,23 +32,30 @@ mark drawn on a cell rather than its colour; they are described in section 6.2.
 
 ## 4.2 Object-oriented concepts
 
-**Encapsulation:** every field private, collections copied in and returned
-unmodifiable, ships never exposed. **Abstraction:** `ShipType` and `ShotResult` name
-what the program needs without revealing storage. **Inheritance:** `GameWindow`
-extends `JFrame`. **Polymorphism:** Swing handles listeners and components through
-their declared types. **Interfaces:** each cell has an `ActionListener`. **State:** a
-ship's hits and the shot history. **Constructors:** used to guarantee validity.
-**Overloading:** two `Board` constructors. **Overriding:** `equals`, `hashCode`,
-`toString`. **Architectural pattern:** MVC. **Collections:** a list for positions
-because order matters, a set for hits because a cell is struck once, a map for
-history because the duplicate rule is key presence.
+Twelve of the concepts the brief lists are demonstrated, each in a specific place in
+the code:
+
+| Concept | Where it appears in this project |
+| --- | --- |
+| Encapsulation | Every field private, collections copied in and returned unmodifiable, ships never exposed |
+| Abstraction | `ShipType` and `ShotResult` name what the program needs without revealing storage |
+| Inheritance | `GameWindow` extends `JFrame` |
+| Polymorphism | Swing handles listeners and components through their declared types |
+| Interfaces | Each cell has an `ActionListener` |
+| State | A ship's hits, and the board's shot history |
+| Constructors | Used to guarantee validity: an invalid `Ship` cannot be created |
+| Overloading | Two `Board` constructors, and two `createBoard` methods |
+| Overriding | `equals`, `hashCode` and `toString` on `Coordinate` |
+| Architectural pattern | Model-View-Controller across the four packages |
+| Collections | A list for positions because order matters, a set for hits because a cell is struck once, a map for history because the duplicate rule is key presence |
+| Exceptions | Invalid arguments and an exhausted generator are refused rather than ignored |
 
 Abstract classes, a designed pattern and mutator methods are absent; section 7.4
 explains each.
 
 ## 4.3 Final class model
 
-*Figure D — `docs/diagrams/figure-D-final-class-model.png`*
+*Figure 4 — `docs/diagrams/figure-D-final-class-model.png`*
 
 The finished model has ten classes where the plan had six. Three of the additions
 are the enums `ShipType` and `ShotResult` and the appearance class `CellStyle`, each

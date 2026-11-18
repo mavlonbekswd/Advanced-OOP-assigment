@@ -63,6 +63,24 @@ public class Capture {
         });
         settle(); save("06-after-restart.png");
 
+        // Play the second game to victory as well. A board cleared for a new game
+        // looks exactly like a board that has never been played, so the only way
+        // to show that the fleet really was placed again is to reveal it.
+        SwingUtilities.invokeLater(() -> {
+            for (JButton c : cells) if (c.isEnabled()) c.doClick();
+        });
+        Thread.sleep(6000);
+        SwingUtilities.invokeLater(() -> {
+            try {
+                Window dlg = null;
+                for (Window w : Window.getWindows())
+                    if (w instanceof JDialog && w.isVisible()) dlg = w;
+                write(window, "07-second-victory-board.png");
+                if (dlg != null) dlg.setVisible(false);
+            } catch (Exception e) { e.printStackTrace(); }
+        });
+        Thread.sleep(6000);
+
         System.out.println("saved to " + dir);
         System.exit(0);
     }

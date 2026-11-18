@@ -3,20 +3,20 @@
 Drawn in Lucidchart and exported as PNG for the Word report. The Lucid documents stay
 editable, so a diagram can be corrected and re-exported without redrawing it.
 
-| File | Report section | What it shows | Lucid document |
-| --- | --- | --- | --- |
-| `figure-A-initial-class-model.png` | 2.5 | The class model as planned, six classes | https://lucid.app/lucidchart/dee6da29-efbc-431a-8f43-249749a5337b/edit |
-| `figure-B-use-case-model.png` | 2.3 | One actor, five use cases, one included | https://lucid.app/lucidchart/b4dc3db4-48a8-4676-85bd-3dfdde75aaff/edit |
-| `figure-C-sequence-model.png` | 2.4 | One shot, with both alternatives | https://lucid.app/lucidchart/8172fdcb-e94a-493b-b216-d4faf446aadf/edit |
-| `figure-D-final-class-model.png` | 4.3 | The implemented model, ten classes | https://lucid.app/lucidchart/16ced3e3-aa11-4f73-b39d-c82c6ce21f1d/edit |
+| File | Figure | Report section | What it shows | Lucid document |
+| --- | --- | --- | --- | --- |
+| `figure-A-initial-class-model.png` | Figure 3 | 2.5 | The class model as planned, six classes | https://lucid.app/lucidchart/dee6da29-efbc-431a-8f43-249749a5337b/edit |
+| `figure-B-use-case-model.png` | Figure 1 | 2.3 | One actor, five use cases, one included | https://lucid.app/lucidchart/b4dc3db4-48a8-4676-85bd-3dfdde75aaff/edit |
+| `figure-C-sequence-model.png` | Figure 2 | 2.4 | One shot, with both alternatives | https://lucid.app/lucidchart/8172fdcb-e94a-493b-b216-d4faf446aadf/edit |
+| `figure-D-final-class-model.png` | Figure 4 | 4.3 | The implemented model, ten classes | https://lucid.app/lucidchart/16ced3e3-aa11-4f73-b39d-c82c6ce21f1d/edit |
 
 All four figures go into the report, and all four are required: the brief asks for
 use case, sequence and class models in the planning section and a class model of the
 final code in the implementation section.
 
-Figures A, B and C describe the design **as it was planned**, which is what the
+Figures 1, 2 and 3 describe the design **as it was planned**, which is what the
 planning section requires. They deliberately do not match the finished code; the
-differences are listed in report section 4.4. Figure D is the final model, taken from
+differences are listed in report section 4.4. Figure 4 is the final model, taken from
 the code as it now stands.
 
 ## On colour
@@ -36,9 +36,16 @@ kept in `bw/` in case the sequence diagram is ever redrawn by hand.
 Colour is used to mean something rather than to decorate:
 
 - Solid blue: classes and use cases that this project wrote.
-- Dashed grey: things outside the project. `JFrame` in Figure D is part of Swing, and
-  "Place the fleet at random" in Figure B is a use case the player never performs.
+- Dashed grey: things outside the project. `JFrame` in Figure 4 is part of Swing, and
+  "Place the fleet at random" in Figure 1 is a use case the player never performs.
 - Dark blue fill: the actor, so it reads as different in kind from a use case.
 
 Nothing depends on colour alone. Every figure still reads correctly printed in black
 and white, because the dashed outlines and the arrowheads carry the same information.
+
+## Figure numbers
+
+The file names still use the letters A to D, which is how the diagrams were drawn,
+but the report numbers every figure in one sequence so that Word can build a table of
+figures: the four diagrams are Figures 1 to 4 and the seven screenshots are Figures 5
+to 11. The table above gives the mapping.

@@ -7,9 +7,11 @@
 ## 7.1 Does the application meet the requirements?
 
 Every requirement from the brief is met, and both chosen extensions work. The
-strongest evidence for the placement rules is Figure 4: when a game ends the sixteen
+strongest evidence for the placement rules is Figure 8: when a game ends the sixteen
 ship cells become visible and the fleet can be counted on screen, so a requirement
-otherwise visible only to automated checks can be confirmed by eye.
+otherwise visible only to automated checks can be confirmed by eye. Figure 11 adds
+the evidence for random placement: a second game, played to its end, hides the fleet
+in different cells.
 
 One requirement was interpreted rather than simply met. The brief does not say
 whether ships meeting at a corner are touching. This project treats diagonal contact
@@ -29,7 +31,7 @@ four differences are recorded in section 4.4 with their reasons.
 
 The checks are plain Java classes rather than JUnit tests: no dependencies, but not
 a recognised framework, and they stop at the first failure. The window itself has no
-automated coverage; its correctness rests on nine hand-run functional cases and on
+automated coverage; its correctness rests on ten hand-run functional cases and on
 holding no rule of its own, and the two rendering faults in section 6.2 show the risk
 in that.
 
@@ -88,7 +90,7 @@ amal qilinmadi: to'rtta farq 4.4-bo'limda sabablari bilan qayd etilgan.
 
 Tekshiruvlar JUnit emas, oddiy Java klasslari: bog'liqlik yo'q, lekin tan olingan
 framework ham emas, va ular birinchi xatoda to'xtaydi. Oynaning o'zida avtomatik
-qoplam yo'q; uning to'g'riligi qo'lda bajarilgan to'qqizta funksional holatga va o'zida
+qoplam yo'q; uning to'g'riligi qo'lda bajarilgan o'nta funksional holatga va o'zida
 hech qanday qoida saqlamasligiga tayanadi — 6.2-dagi ikkita nuqson bu xavfni
 ko'rsatadi.
 
@@ -116,3 +118,8 @@ Birinchi navbatda tekshiruvlarni JUnit'ga o'tkazish, chunki bu ball yo'qotishi e
 ehtimolli bo'shliq, tekshirilayotgan xulq esa o'zgarmaydi. Keyin, kema cho'kkanda
 uning turini xabarda aytish, va allaqachon mavjud va testlangan taxta o'lchami
 parametri orqali qiyinlik darajalarini qo'shish.
+
+**Qo'shimcha izoh (18-noyabr).** 7.1-ga bitta jumla qo'shildi: tasodifiy
+joylashtirishning ekrandagi isboti endi 11-rasm — ikkinchi o'yin ham oxirigacha
+o'ynalib, flot boshqa kataklarda ekani ko'rsatildi. Bundan oldin bu da'voning
+faqat avtomatik testlarda isboti bor edi.
