@@ -1,85 +1,58 @@
 # 7. Critical Evaluation
 
-*Target: 300 words. Status: complete, written after the application was finished.*
+*Target: 330 words. Status: complete.*
 
 ---
 
 ## 7.1 Does the application meet the requirements?
 
-Every requirement taken from the brief is met. The game presents a ten by ten grid
-hiding one Battleship, two Cruisers and three Destroyers; the computer places them
-with no overlap and no contact; a selected square turns blue when empty and red when
-it covers a ship; and the game ends once every ship has been sunk. The two chosen
-extensions, random placement and a mouse-controlled interface, are also working.
+Every requirement from the brief is met, and both chosen extensions work. The
+strongest evidence for the placement rules is Figure 4: when a game ends the sixteen
+ship cells become visible and the fleet can be counted on screen, so a requirement
+otherwise visible only to automated checks can be confirmed by eye.
 
-The strongest evidence for the placement rules is Figure 4. When a game ends, the
-sixteen ship cells become visible, and the fleet can be counted directly on screen:
-one line of four, two of three and three of two, with no two ships meeting at an
-edge or a corner. A requirement that is otherwise only visible to automated checks
-can therefore be confirmed by eye.
-
-One requirement was interpreted rather than simply met. The brief says two ships must
-not touch but does not say whether meeting at a corner counts. This project treats
-diagonal contact as touching. That is the stricter reading, so every layout it
-produces would also be legal under the looser one, but it does reduce the number of
-possible layouts and should be acknowledged as an interpretation rather than a fact.
+One requirement was interpreted rather than simply met. The brief does not say
+whether ships meeting at a corner are touching. This project treats diagonal contact
+as touching, the stricter reading, so every layout it produces would also be legal
+under the looser one; but it reduces the number of possible layouts and is an
+interpretation rather than a fact.
 
 ## 7.2 Was a plan made, and was it followed?
 
-A planning document was written before any application code existed and has been
-preserved unchanged. The order of work followed the plan: the domain model, then the
-fleet generator, then the controller, then the interface, with each stage tested
-before the next began. A development log records what was actually done at each
-stage, including the things that went wrong.
-
-The plan was not followed blindly. Four differences from it are recorded in section
-4.7, each with the reason it was made. The most significant is that the three ship
-types were not made into subclasses, because they differ only in length and a
-subclass that adds no behaviour adds only complexity.
+A planning document was written before any application code existed and preserved
+unchanged. The order of work followed it: model, generator, controller, interface,
+each tested before the next began, and a development log records what was actually
+done at each stage, including what went wrong. The plan was not followed blindly:
+four differences are recorded in section 4.4 with their reasons.
 
 ## 7.3 Limitations
 
-The honest weaknesses of this submission are as follows.
+The checks are plain Java classes rather than JUnit tests: no dependencies, but not
+a recognised framework, and they stop at the first failure. The window itself has no
+automated coverage; its correctness rests on nine hand-run functional cases and on
+holding no rule of its own, and the two rendering faults in section 6.2 show the risk
+in that.
 
-The automated checks are plain Java classes with a `main` method rather than JUnit
-tests. This keeps the project free of dependencies, but they are not a recognised
-framework and they stop at the first failure instead of reporting everything at once.
-
-The window itself has no automated coverage. Its correctness rests on nine functional
-cases carried out by hand and on the fact that it contains no rule of its own. The
-two rendering faults described in section 6 show the risk in that: both were
-invisible to every automated check and were found only by looking at the screen.
-
-`Board` does not enforce the fleet composition; it accepts any ships that fit the
-placement rules, and the exact fleet is the generator's responsibility. This is
-convenient, because tests can use a board holding one or two ships, but it means a
-future caller could build a board with the wrong fleet and the board would not object.
-
-Nothing is saved. Closing the window loses the game, and there is no record of
-previous results. The difficulty levels and the two-player mode offered by the brief
-were deliberately deferred and are not present.
+`Board` does not enforce the fleet composition, accepting any ships that fit the
+placement rules. This lets tests use a board of one or two ships, but a future caller
+could build a wrong fleet unchallenged. Finally, nothing is saved, and the difficulty
+levels and two-player mode the brief offers were deliberately deferred.
 
 ## 7.4 Object-oriented concepts
 
-Of the fourteen concepts listed in the brief, which expects most but not all, this
-project demonstrates encapsulation, abstraction, inheritance, polymorphism, state,
-constructors, accessor methods, interfaces, overriding, overloading, an architectural
-pattern and a justified choice of collections.
+Of the fourteen concepts the brief lists, expecting most but not all, this project
+demonstrates twelve; they are listed in section 4.2.
 
-Three are not demonstrated, and each absence was a decision rather than an oversight.
-No abstract class is used, because no place in this design has two implementations
-that share partial behaviour. No design pattern was deliberately introduced; the
-observer relationship between a button and its listener comes from Swing rather than
-from this project's design. Mutator methods are almost entirely absent, because
-`Coordinate` and the positions of a `Ship` are immutable; encapsulation was taken to
-mean controlling change, not providing a setter for every field.
+Three are absent by decision rather than oversight. No abstract class is used,
+because nowhere do two implementations share partial behaviour. No design pattern was
+deliberately introduced: the observer relationship between a button and its listener
+comes from Swing. Mutator methods are almost entirely absent, because `Coordinate`
+and a ship's positions are immutable; encapsulation was taken to mean controlling
+change, not providing a setter for every field.
 
 ## 7.5 What could be improved
 
-Converting the checks to JUnit would be the first improvement, since it is the one
-gap most likely to cost marks and the behaviour being checked would not change.
-Beyond that, the most useful additions in order of value would be: naming the type of
-ship in the message when one is sunk, which the controller does not currently report;
-difficulty levels using the existing board-size parameter, which already exists and
-is tested; and keyboard control alongside the mouse, which would make the game usable
-without pointing.
+Converting the checks to JUnit would come first, since it is the gap most likely to
+cost marks while the behaviour checked would not change. After that, naming the type
+of ship when one is sunk, and adding difficulty levels through the board-size
+parameter that already exists and is already tested.

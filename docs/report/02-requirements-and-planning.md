@@ -1,73 +1,61 @@
 # 2. Requirements and Planning
 
-*Target: 450 words of prose plus three UML models. Status: prose complete; the three
-diagrams still have to be drawn.*
+*Target: 400 words plus three UML models. Status: prose complete; diagrams pending.*
 
 ---
 
 ## 2.1 Requirements taken from the brief
 
-The assessment brief fixes the rules of the game, and these were treated as
-non-negotiable. The player is shown a ten by ten grid that hides one Battleship of
-four cells, two Cruisers of three cells each and three Destroyers of two cells each.
-That is six ships occupying sixteen of the hundred cells. The computer must place
-them so that no two ships overlap and no two ships touch. When the player selects a
-square it turns blue if it is empty and red if it covers part of a ship, and the game
-ends once every ship has been sunk.
+The brief fixes the rules, and these were treated as non-negotiable. The player is
+shown a ten by ten grid hiding one Battleship of four cells, two Cruisers of three
+and three Destroyers of two: six ships occupying sixteen of the hundred cells. The
+computer must place them so that no two overlap and no two touch. A selected square
+turns blue if empty and red if it covers a ship, and the game ends once every ship is
+sunk.
 
-The brief also states that a basic game, in which the ships always sit in the same
-place and the player types coordinates, cannot score above forty per cent. To go
-beyond fifty per cent it lists several possible extensions. Two of these were chosen
-as the target for this project: random ship placement and a full graphical interface
-controlled with the mouse. Difficulty levels and a two-player mode were considered
-and deliberately deferred, because a smaller application that works completely was
-judged more valuable than a larger one that is unfinished.
+The brief also sets two thresholds. A basic game, with fixed ship positions and typed
+coordinates, cannot score above forty per cent; to pass fifty it lists several
+extensions. Two were chosen: random placement and a mouse-controlled interface, both
+of which the Week 4 lecture also names as expected. Difficulty levels and a
+two-player mode were deliberately deferred, because a smaller application that works
+completely was judged more valuable than a larger unfinished one.
 
-One point in the brief is genuinely ambiguous. It says that two ships must not touch,
-but it does not say whether two ships that meet only at a corner count as touching.
-This project treats diagonal contact as touching, which is the stricter of the two
-readings. The stricter rule was chosen because it cannot produce a layout that the
-looser rule would reject, so it is safe under either interpretation, and because it
-is simple to state and therefore simple to test.
+Two points required a decision. First, the brief says ships must not touch but not
+whether meeting at a corner counts; this project treats diagonal contact as touching.
+The stricter rule cannot produce a layout the looser rule would reject, so it is safe
+under either reading and is simple to test. Second, the Week 3 lecture illustrates
+the same game with a differently named fleet. The assessment brief is authoritative,
+so its composition was followed.
 
 ## 2.2 How the work was planned
 
-Because the project is the work of one person, the development followed a waterfall
-sequence rather than an iterative team process. Requirements were written first, then
-the architecture, then the code, then the tests of each piece as it was completed.
+As the work of one person, development followed a waterfall sequence rather than an
+iterative team process, as the Week 5 lecture advises: requirements, then
+architecture, then code, then tests of each piece as it was finished.
 
-A planning document was produced before any application code was written. It records
-the requirements above, separates what the brief demands from what this project chose
-to add, lists the assumptions that needed checking, and sets out an initial
-architecture. That document has been preserved unchanged as a baseline so that the
-differences between the original plan and the finished application can be shown
-honestly later in this report.
+A planning document was produced before any application code existed, recording the
+requirements, separating what the brief demands from what this project chose to add,
+listing assumptions needing confirmation and setting out an initial architecture. It
+has been preserved unchanged, so the differences between plan and outcome can be
+shown honestly in section 4.4.
 
-The work was then broken into stages that could each be finished and tested on their
-own: the domain model, the fleet generator, the game controller and finally the user
-interface. Each stage had to pass its own checks before the next one began, so that a
-fault in the rules could never be mistaken for a fault in the interface.
+The work was divided into stages that could each be finished and tested alone: the
+model, the generator, the controller, then the interface. Each had to pass its own
+checks before the next began, so a fault in the rules could never be mistaken for a
+fault in the interface.
 
 ## 2.3 Initial use case model
 
-**PENDING — diagram must be drawn.**
-
-The draft inventory of use cases is recorded in `docs/architecture/UML.md`: the single
-actor is the human player, and the use cases are start a game, select a target,
-inspect hit or miss feedback, see victory, and restart. Random placement happens as
-part of starting a game.
+**PENDING — diagram to be drawn.** Actor: the human player. Use cases: start a game,
+select a target, see hit or miss feedback, see victory, restart. Random placement
+occurs as part of starting a game.
 
 ## 2.4 Initial sequence model
 
-**PENDING — diagram must be drawn.**
-
-A draft in Mermaid form exists in `docs/architecture/UML.md`, covering a single shot
-travelling from the player through the window and controller to the board and back.
+**PENDING — diagram to be drawn.** One shot travelling from the player through the
+window and controller to the board and back.
 
 ## 2.5 Initial class model
 
-**PENDING — diagram must be drawn.**
-
-A draft exists in `docs/architecture/UML.md`. It must be presented as the model as it
-was planned, not as the final code, because the two differ; the differences are
-described in section 4.
+**PENDING — diagram to be drawn.** This must show the model as planned, not the
+final code; the differences are in section 4.4.

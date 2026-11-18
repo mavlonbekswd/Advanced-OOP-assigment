@@ -1,109 +1,58 @@
 # 4. Implementation
 
-*Target: 300 words of prose, plus the final class model and the differences from the
-initial plan. Status: three layers of four are described; the interface section and
-the final UML are pending.*
+*Target: 300 words plus the final class model. Status: complete except the diagram.*
 
 ---
 
-## 4.1 The domain model
+## 4.1 How the application is built
 
-Four classes hold the state and the rules. `Coordinate` is an immutable pair of
-integers with `equals` and `hashCode` overridden so that two coordinates with the
-same row and column are treated as the same cell. This matters because coordinates
-are used as keys in a map and as members of a set, and without those overrides a
-repeated shot would not be recognised.
+Nine classes sit in the four layers described in section 3.
 
-`Ship` holds its type, the cells it occupies and the set of cells that have been hit.
-Its constructor is the only place a ship can be given a shape, and it rejects any
-input that is not a straight, unbroken line of the correct length, so a ship object
-cannot exist in an invalid state. The occupied cells are copied on the way in and
-returned as an unmodifiable list, so outside code cannot alter a placed ship.
+In the model, `Coordinate` is an immutable cell location overriding `equals` and
+`hashCode`, without which a repeated shot would not be recognised. `Ship` holds its
+type, its cells and the cells hit so far, and its constructor rejects anything that
+is not a straight unbroken line of the right length, so a ship cannot exist in an
+invalid state. `Board` owns the ships and the shot history and is the sole authority
+on placement, rejecting any cell out of bounds or within one row and one column of an
+existing ship, which is how the diagonal rule is enforced.
 
-`Board` owns the ships and the history of shots. It alone decides whether a placement
-is legal, checking that every cell is inside the grid and that no cell of the
-candidate lies within one row and one column of any existing ship, which enforces the
-diagonal rule described in section 2. `ShotResult` names the four possible outcomes
-of a shot: miss, hit, sunk, and already shot.
+`RandomShipPlacer` builds a fleet, longest ship first, since placing the four-cell
+Battleship on an empty board wastes far fewer attempts. Retrying is bounded per ship
+and per board, and exhaustion raises an exception rather than looping.
+`GameController` starts and restarts games, passes shots to the board and counts
+shots and hits separately, and refuses further shots once the fleet is destroyed.
 
-## 4.2 Random fleet generation
+In the interface, `CellStyle` returns the colour and mark for one cell and touches no
+component, which lets the required colours be checked with no display. `GameWindow`
+gives each cell a listener reporting its own position and redraws the grid from the
+controller after every shot.
 
-`RandomShipPlacer` builds a complete fleet. It holds the required composition as a
-fixed list, longest ship first, because placing the four-cell Battleship while the
-board is still empty wastes far fewer attempts than placing it last. For each ship it
-chooses an orientation and a starting cell at random, builds a candidate and asks the
-board whether that candidate is acceptable.
+## 4.2 Object-oriented concepts
 
-Retrying is bounded in two places, per ship and per whole board. If a valid fleet
-still cannot be produced, the generator raises an exception rather than looping
-forever. The source of randomness is supplied through the constructor, which allows a
-test to pass a seeded generator and obtain exactly the same fleet every time.
+**Encapsulation:** every field private, collections copied in and returned
+unmodifiable, ships never exposed. **Abstraction:** `ShipType` and `ShotResult` name
+what the program needs without revealing storage. **Inheritance:** `GameWindow`
+extends `JFrame`. **Polymorphism:** Swing handles listeners and components through
+their declared types. **Interfaces:** each cell has an `ActionListener`. **State:** a
+ship's hits and the shot history. **Constructors:** used to guarantee validity.
+**Overloading:** two `Board` constructors. **Overriding:** `equals`, `hashCode`,
+`toString`. **Architectural pattern:** MVC. **Collections:** a list for positions
+because order matters, a set for hits because a cell is struck once, a map for
+history because the duplicate rule is key presence.
 
-## 4.3 The game controller
+Abstract classes, a designed pattern and mutator methods are absent; section 7.4
+explains each.
 
-`GameController` owns the lifecycle. It starts and restarts games, passes shots to
-the board, and counts how many shots the player has taken and how many found a ship.
-A repeated shot returns `ALREADY_SHOT` and increases neither count, so clicking the
-same square twice cannot inflate a score. Once every ship has been sunk the
-controller refuses any further shot, because a finished game is a fact about the
-session rather than a rule about the grid.
+## 4.3 Final class model
 
-## 4.4 The user interface
+**PENDING — diagram to be drawn,** covering all four layers.
 
-Two classes make up the view. `CellStyle` decides how a single cell should look,
-returning a colour and a one-character mark for each possible state. It holds no
-components and opens no window, which is what allows the colours the brief requires
-to be checked automatically with no display present.
+## 4.4 Differences from the initial plan
 
-`GameWindow` builds the frame: a status line, a grid of one hundred buttons and a New
-Game button. Each cell button is given a listener that reports its own row and column
-to the window, which passes them to the controller and then redraws the whole grid
-from the controller's state. Cells already fired at are disabled, so a repeated click
-is impossible rather than merely ignored, and the whole grid is disabled once the game
-has been won.
-
-## 4.5 Object-oriented concepts used
-
-Encapsulation appears throughout: every field is private, collections are copied on
-the way in and returned unmodifiable, and `Board` never exposes the ships. Abstraction
-appears in `ShipType` and `ShotResult`, which name the few facts the rest of the
-program needs without revealing how they are stored. Constructors are used to
-guarantee valid state rather than merely to assign fields. Overloading appears in the
-two `Board` constructors and the two forms of `createBoard`. Overriding appears in
-`equals`, `hashCode` and `toString` on `Coordinate`. The choice of collection was
-deliberate in each case: a list for ship positions because order and contiguity
-matter, a set for hits because a cell can only be struck once, and a map from cell to
-outcome for the shot history because the duplicate rule is a question of whether a
-key is already present.
-
-Interfaces appear in the view. Each cell is given an `ActionListener`, which is the
-callback interface Swing uses for events: the window supplies the behaviour and the
-toolkit decides when to run it. Inheritance appears in `GameWindow`, which extends
-`JFrame` in order to be a window while adding the behaviour of this particular one,
-and polymorphism appears wherever Swing treats those listeners and components through
-their declared types without knowing what this application put behind them.
-
-## 4.6 Final class model
-
-**PENDING — the diagram must still be drawn.** The classes and their relationships
-are recorded in `docs/architecture/UML.md`, which now covers all four layers: the
-model, the generator, the controller and the view.
-
-## 4.7 Differences from the initial plan
-
-**PARTIALLY COMPLETE.** Three differences have been recorded so far.
-
-The initial plan left open whether the ship types should be subclasses. The finished
-code uses one class composed with an enum instead, for the reason given in section 3.
-
-The initial plan expected JUnit to be used. The checks are instead plain Java
-harnesses with a `main` method, because the project was built without external
-dependencies; this is discussed honestly in section 6.
-
-The initial plan did not say where the game-over guard would live. It was placed in
-the controller rather than the board once the distinction between a session fact and
-a grid rule became clear during implementation.
-
-The initial plan treated the interface as a single class. It became two: the window
-itself and a separate class holding the appearance of a cell. The split was made so
-that the colours the brief requires could be tested without opening a window.
+Four changes were made. The plan left open whether ship types should be subclasses;
+one class composed with an enum was used instead, for the reason in section 3. The
+plan expected JUnit; plain Java harnesses were used, leaving no dependencies, at the
+cost given in section 6.2. The plan did not say where the game-over guard would live;
+it went to the controller once the difference between a session fact and a grid rule
+became clear. Finally, the plan treated the interface as one class, and it became
+two, so the required colours could be tested without opening a window.

@@ -24,67 +24,60 @@ report is a description of the project rather than a diary.
 | 7 | [Critical evaluation](07-critical-evaluation.md) | 15% | 300 | Complete |
 | 8 | [Conclusion](08-conclusion.md) | part of 5% | 80 | Complete |
 | 9 | [References](09-references.md) | part of 5% | — | Pending formatting |
-| A | [Interview questions](appendix-a-interview-questions.md) | 10% | ~800 | **Blocked** — the official question list is missing |
+| A | [Interview questions](appendix-a-interview-questions.md) | 10% | ~600 | Questions obtained; **answers must be written by the student** |
 
 Run `./wordcount.sh` from this folder to see the current length of each section.
 
-## Word limit
+## Word limit — verified
 
-A recommended length of 1,500–2,000 words with a maximum of 3,000 is recorded in the
-preserved planning document, which attributes it to the Week 4 slides. **Those slides
-are not among the available materials, so this figure has not been verified.**
-Whether appendices, references, captions and tables count towards the limit is not
-stated in any source available to this project. Both points should be confirmed with
-the module leader.
+The Week 4 lecture states it directly: the component is **3,000 words in total**,
+with **about 1,500–2,000 words for the report**, and the report "can be up to 3,000
+words". The figure recorded in the planning document is therefore confirmed.
 
-The section targets above add up to roughly 1,900 words excluding the appendix, which
-sits inside the recommended range if the appendix is excluded from it.
+Whether captions, tables, references and the appendix count towards the limit is
+still not stated in any available source, and should be confirmed with the module
+leader.
 
-**Every section except the appendix is now written, and the draft is far over
-length.** As of 18 November the prose totals about 4,480 words against a combined
-target of roughly 1,900, and against the recorded maximum of 3,000. Writing long
-first was deliberate, because it is easier to cut an argument that has been made in
-full than to expand a thin one, but a trimming pass is now the single most important
-remaining task on the report.
+### Current length
 
-| Section | Current | Target | To cut |
-| --- | --- | --- | --- |
-| 1 Introduction | 124 | 120 | — |
-| 2 Requirements and planning | 577 | 450 | ~130 |
-| 3 Design decisions | 427 | 250 | ~180 |
-| 4 Implementation | 949 | 300 | ~650 |
-| 5 Screenshots | 414 | 100 | ~310 |
-| 6 Testing | 875 | 300 | ~575 |
-| 7 Critical evaluation | 734 | 300 | ~430 |
-| 8 Conclusion | 75 | 80 | — |
+| Section | Words |
+| --- | --- |
+| 1 Introduction | 124 |
+| 2 Requirements and planning | 451 |
+| 3 Design decisions | 312 |
+| 4 Implementation | 440 |
+| 5 Screenshots | 210 |
+| 6 Testing | 556 |
+| 7 Critical evaluation | 428 |
+| 8 Conclusion | 75 |
+| **Main body** | **2,596** |
+| Appendix A (questions only; answers still to be written) | 613 |
 
-Guidance for the pass, in order of priority:
+The draft has been cut from about 4,480 words to 2,596. That is inside the stated
+maximum of 3,000 but above the recommended 2,000.
 
-1. **Section 4** is the clearest target. It currently explains the code class by
-   class, and most of that belongs in the Javadoc rather than the report. The
-   lecturer's advice is that the implementation section should be short and should
-   describe how the application was implemented rather than narrate the work.
-2. **Section 5** should become captions only. The account of how the screenshots
-   were captured can be reduced to one sentence.
-3. **Section 6** is harder to cut than its size suggests. Testing carries 15% of the
-   marks and the two rendering defects are unusually strong evidence, so the
-   functional table and the defect account should survive; the approach paragraphs
-   can be compressed.
-4. **Section 7** likewise carries 15%. The limitations and the object-oriented
-   coverage are what the brief asks for directly; the list of improvements can be
-   reduced to two or three items.
+**Reaching 2,000 would mean removing content that carries marks**, so it is a
+decision rather than an edit. The options, in the order they cost least:
 
-Note that the limit itself is still unverified, and whether captions, tables and the
-appendix count towards it is unknown, so the target may change. Run `./wordcount.sh`
-after each pass.
+1. Move the nine-row functional test table to the appendix (about 130 words). The
+   table is strong evidence for the 15% testing mark, so it should be moved rather
+   than deleted.
+2. Reduce the figure captions in section 5 to one line each (about 80 words).
+3. Move the list of object-oriented concepts in section 4.2 into a two-column table
+   (about 100 words, and it reads better as a table).
+4. Cut the restatement of the requirements in section 2.1 to a short list (about 140
+   words). This is the riskiest, since planning carries 25%.
+
+Together those come to roughly 450 words, which lands the main body near 2,150.
+Going below that would start removing argument rather than wording.
 
 ## Still to obtain
 
 1. The exact submission deadline. Only "end of Week 12" is stated in the Week 1
    slides.
-2. Confirmation of the word limit and what counts towards it.
-3. The Word document containing the ten interview questions.
-4. Whether "two ships do not touch" is intended to include diagonal contact. This
+2. Whether captions, tables, references and the appendix count towards the word
+   limit. The limit itself is now confirmed.
+3. Whether "two ships do not touch" is intended to include diagonal contact. This
    project assumes it does and says so explicitly.
 
 ## Final deliverables

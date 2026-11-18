@@ -15,6 +15,6 @@ Source: supplied `For-Assesment-task-Only.txt`, Part A and Part B. Lecture claim
 
 Assumption: touching includes diagonals. Clarify with lecturer if necessary. Difficulty and two-player play are deferred. No database, networking or accounts.
 
-Report: planning before implementation, initial use-case/sequence/class UML, implementation differences, final class UML, annotated screenshots, functional and unit testing, critical evaluation, ten actual tutorial interview questions, cover/contents/figures/introduction/captions. Interview question source is still missing. Never invent answers to unseen questions.
+Report: planning before implementation, initial use-case/sequence/class UML, implementation differences, final class UML, annotated screenshots, functional and unit testing, critical evaluation, ten tutorial interview questions, cover/contents/figures/introduction/captions. The interview questions were obtained on 18 Nov 2026; the sheet forbids generating the answers with a language model, so the student writes them.
 
 Mark distribution in supplied brief: code 20%; planning 25%, implementation 10%, testing 15%, evaluation 15%, interview 10%, report quality 5%.
