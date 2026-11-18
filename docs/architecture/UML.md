@@ -151,3 +151,9 @@ classDiagram
 
 All four planned layers now exist. The sequence diagram earlier in this document
 describes behaviour that is now implemented end to end rather than proposed.
+
+## Drawn diagrams — 18 November 2026
+
+The Mermaid blocks above are working notes. The diagrams that go into the report were
+drawn in Lucidchart and exported to `docs/diagrams/`, which lists the editable links.
+Figures A, B and C describe the design as planned; Figure D is the final model.

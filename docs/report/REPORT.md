@@ -25,9 +25,9 @@ does not, and whether it is worth restoring if the word limit allows.
 | # | File | Marks | Target words | Status |
 |---|---|---|---|---|
 | 1 | [Introduction](01-introduction.md) | part of 5% | 120 | Complete |
-| 2 | [Requirements and planning](02-requirements-and-planning.md) | 25% | 450 | Prose complete; three UML diagrams pending |
+| 2 | [Requirements and planning](02-requirements-and-planning.md) | 25% | 450 | Complete, with Figures A, B and C |
 | 3 | [Design decisions](03-design-decisions.md) | part of 25% | 250 | Complete |
-| 4 | [Implementation](04-implementation.md) | 10% | 300 | Complete; final UML diagram pending |
+| 4 | [Implementation](04-implementation.md) | 10% | 300 | Complete, with Figure D |
 | 5 | [Screenshots](05-screenshots.md) | part of 10% | 100 | Complete; six captured figures |
 | 6 | [Testing](06-testing.md) | 15% | 300 | Complete; unit and functional |
 | 7 | [Critical evaluation](07-critical-evaluation.md) | 15% | 300 | Complete |

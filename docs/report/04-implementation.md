@@ -48,7 +48,13 @@ explains each.
 
 ## 4.3 Final class model
 
-**PENDING — diagram to be drawn,** covering all four layers.
+*Figure D — `docs/diagrams/figure-D-final-class-model.png`*
+
+The finished model has ten classes where the plan had six. Three of the additions
+are the enums `ShipType` and `ShotResult` and the appearance class `CellStyle`, each
+of which exists for a reason given in section 3; the fourth is `App`, the entry
+point. The direction of every dependency still runs inwards, from the window to the
+controller to the board, and nothing in the model knows about Swing.
 
 ## 4.4 Differences from the initial plan
 

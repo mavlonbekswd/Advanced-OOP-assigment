@@ -96,3 +96,18 @@ written.
 Trimmed the report from about 4,480 words of prose to 2,596. The index records what
 would have to be moved to reach 2,000 and notes that doing so means relocating
 content that carries marks.
+
+## 2026-11-18 — UML diagrams drawn
+Drew the four diagrams the brief requires in Lucidchart and exported them to
+`docs/diagrams/`: the initial use case, sequence and class models for the planning
+section, and the final class model for the implementation section. The Lucid
+documents stay editable, so a correction does not mean redrawing.
+
+Importing Mermaid into Lucid turned out to store the source as a code block rather
+than as shapes, so those documents could not be exported as images. The class and use
+case diagrams were rebuilt from native Lucid UML shapes instead; the sequence diagram
+came out correctly from PlantUML the first time. The two unusable documents are
+recorded in `docs/diagrams/README.md` so they can be deleted.
+
+Report sections 2.3, 2.4, 2.5 and 4.3 now carry the figures and a short commentary
+each, replacing the pending notices.

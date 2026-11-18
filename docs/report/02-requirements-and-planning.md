@@ -46,19 +46,34 @@ fault in the interface.
 
 ## 2.3 Initial use case model
 
-**PENDING — diagram to be drawn.** Actor: the human player. Use cases: start a game,
-select a target, see hit or miss feedback, see victory, restart. Random placement
-occurs as part of starting a game.
+*Figure B — `docs/diagrams/figure-B-use-case-model.png`*
+
+The only actor is the human player, who starts a game, selects a target, sees hit or
+miss feedback, sees victory and restarts. Placing the fleet at random is not
+something the player does; it is included by starting a game and by restarting, which
+is why it is drawn inside the system with an include relationship rather than
+connected to the actor.
 
 ## 2.4 Initial sequence model
 
-**PENDING — diagram to be drawn.** One shot travelling from the player through the
-window and controller to the board and back.
+*Figure C — `docs/diagrams/figure-C-sequence-model.png`*
+
+The diagram follows one shot. The player clicks a cell, the window asks the
+controller to shoot, and the controller either refuses because the game is already
+won or passes the coordinate to the board. The board answers with one of its four
+outcomes, consulting a ship only when the cell has not been fired at before. The
+window then asks the controller for the state of every cell and redraws the grid.
+Showing the two alternatives on the diagram is deliberate: the duplicate-shot rule
+and the end of the game are where most of the controller's behaviour lives.
 
 ## 2.5 Initial class model
 
-**PENDING — diagram to be drawn.** This must show the model as planned, not the
-final code; the differences are in section 4.4.
+*Figure A — `docs/diagrams/figure-A-initial-class-model.png`*
+
+This is the model as it was planned, not the finished code. `Board` composes six
+ships, a ship is made of coordinates, a placer fills a board, a controller drives
+both and a window drives the controller. The differences between this and what was
+actually built are listed in section 4.4.
 
 <!-- UZ -->
 
