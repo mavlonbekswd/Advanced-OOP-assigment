@@ -136,6 +136,23 @@ public final class Board {
     }
 
     /**
+     * Reports the condition of each ship without saying where any of them are.
+     *
+     * <p>The interface needs this to list the fleet and cross ships off as they go
+     * down. Handing out the ships themselves would hand out their squares, so each
+     * one is reduced to a {@link ShipStatus}: its type, and whether it has sunk.
+     *
+     * @return a fixed snapshot, in the order the ships were placed
+     */
+    public List<ShipStatus> getFleetStatus() {
+        List<ShipStatus> report = new ArrayList<>(ships.size());
+        for (Ship ship : ships) {
+            report.add(new ShipStatus(ship.getType(), ship.isSunk()));
+        }
+        return Collections.unmodifiableList(report);
+    }
+
+    /**
      * Reports whether the game on this board has been won.
      *
      * @return true only for a nonempty fleet with every ship sunk

@@ -1,6 +1,7 @@
 package battleship.model;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 /** Dependency-free Board behaviour checks; not JUnit. */
@@ -56,6 +57,39 @@ public final class BoardSelfTest {
         check(board.allShipsSunk() && board.getSunkShipCount() == 2, "Victory");
         check(board.getShots().size() == 5, "Only unique valid shots counted");
         check(board.getShots().get(c(0, 1)) == ShotResult.SUNK, "Original shot outcome preserved");
+
+        // The fleet report is what lets the interface list the ships without ever
+        // being told where they are. It must name the type and say whether it has
+        // gone down, and nothing else.
+        Board reported = new Board();
+        check(reported.getFleetStatus().isEmpty(), "An empty board reports no ships");
+        reported.placeShip(new Ship(ShipType.CRUISER,
+                Arrays.asList(c(0, 0), c(0, 1), c(0, 2))));
+        reported.placeShip(ship(5, 5, 5, 6));
+        List<ShipStatus> fleet = reported.getFleetStatus();
+        check(fleet.size() == 2, "Every placed ship is reported");
+        check(fleet.get(0).getType() == ShipType.CRUISER, "Ships are reported in placement order");
+        check(fleet.get(1).getType() == ShipType.DESTROYER, "The second ship keeps its type");
+        check(!fleet.get(0).isSunk() && !fleet.get(1).isSunk(), "Nothing is sunk before a shot");
+        check(fleet.get(0).getLength() == ShipType.CRUISER.getLength(),
+                "A report carries the length the panel draws");
+
+        reported.fireAt(c(5, 5));
+        check(!reported.getFleetStatus().get(1).isSunk(), "A damaged ship is not yet sunk");
+        reported.fireAt(c(5, 6));
+        check(reported.getFleetStatus().get(1).isSunk(), "A finished ship is reported sunk");
+        check(!reported.getFleetStatus().get(0).isSunk(), "Sinking one ship leaves the other");
+
+        // The report is a snapshot. Holding on to an old one must not show the
+        // player a ship coming back to life, and the list itself cannot be edited.
+        List<ShipStatus> snapshot = reported.getFleetStatus();
+        reported.fireAt(c(0, 0));
+        reported.fireAt(c(0, 1));
+        reported.fireAt(c(0, 2));
+        check(!snapshot.get(0).isSunk(), "An old report does not change underneath the caller");
+        check(reported.getFleetStatus().get(0).isSunk(), "A fresh report sees the new sinking");
+        rejects(UnsupportedOperationException.class, () -> snapshot.add(null));
+
         Board small = new Board(2);
         small.placeShip(ship(0, 0, 1, 0));
         check(small.getSize() == 2 && small.getShipCount() == 1, "Custom size");
