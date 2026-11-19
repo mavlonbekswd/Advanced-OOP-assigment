@@ -74,3 +74,61 @@ controller reports.
 The harness in `docs/evidence/` drives the real application through its own buttons
 to capture the screenshots. It is evidence tooling, not part of the game, and is kept
 outside `src/` so it is not mistaken for application code.
+
+---
+
+# Interface test evidence — 19 November 2026
+
+The window was rebuilt around a toolbar, a labelled grid and a fleet panel, and a
+difficulty setting was added, so this is a fresh run rather than an amendment of the
+record above. The figure numbers used here are the report's new ones (5 to 14).
+
+## Automated checks
+
+```bash
+rm -rf build && mkdir -p build
+javac -Xlint:all -d build $(find src/main/java -name '*.java')
+javac -d build -cp build $(find src/test/java -name '*.java')
+java -cp build battleship.model.CoordinateSelfTest
+java -cp build battleship.model.ShipSelfTest
+java -cp build battleship.model.BoardSelfTest
+java -cp build battleship.model.DifficultySelfTest
+java -cp build battleship.service.RandomShipPlacerSelfTest
+java -cp build battleship.controller.GameControllerSelfTest
+java -cp build battleship.view.CellStyleSelfTest
+```
+
+```
+PASS: 10 Coordinate self-checks
+PASS: 52 Ship self-checks
+PASS: 55 Board self-checks
+PASS: 26 Difficulty self-checks
+PASS: 21 RandomShipPlacer self-checks
+PASS: 120 GameController self-checks
+PASS: 12 CellStyle self-checks
+```
+
+296 checks in total on OpenJDK 23.0.2, macOS. No compiler warnings under
+`-Xlint:all` and no `javadoc` warnings.
+
+## Functional cases
+
+F1 to F10 were re-run against the rebuilt window and all still pass; the screenshots
+in `docs/screenshots/` were retaken from it. F11 to F15 are new and cover the
+difficulty setting. What the window reported in each case:
+
+| # | Action | Observed |
+| --- | --- | --- |
+| F11 | Choose Easy | 144 squares, counter reads `0 / 144`, labels run A to L and 1 to 12 |
+| F12 | Choose Hard | 64 squares, counter reads `0 / 40` |
+| F13 | Use every shot on Hard | Dialog: "You have used all 40 shots and 3 ship(s) survived"; grid disabled |
+| F14 | Change the setting two shots into a game | Confirmation dialog appears; answering No leaves the game on Hard at `2 / 40` with the status line unchanged, and the chooser returns to Hard |
+| F15 | Press Rules | Dialog explaining the fleet, the colours and the shot limit |
+
+F14 is the case worth keeping: the chooser is the only control that can destroy a game
+in progress by accident, and it is the only one that asks first.
+
+One behaviour was confirmed rather than found: when a ship sinks, only the square that
+completes it turns the darker red. The earlier caption for the sunk-ship figure said
+both squares of a Destroyer darken, which the picture never showed. This is recorded
+as a limitation in report section 7.3.

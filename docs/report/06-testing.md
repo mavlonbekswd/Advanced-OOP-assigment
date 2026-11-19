@@ -7,43 +7,53 @@
 ## 6.1 Unit testing
 
 Testing ran alongside development: each class was checked before the next was
-written, and each check was watched failing before the code that satisfies it was
-written, because a check that has never failed may be testing the wrong thing. The
-checks are plain Java classes with a `main` method rather than JUnit tests, which
-leaves the project free of dependencies at the cost of not being a recognised
-framework.
+written, and each check was watched failing before the code that satisfies it
+was written, because a check that has never failed may be testing the wrong
+thing. The checks are plain Java classes with a `main` method rather than JUnit
+tests, which leaves the project free of dependencies at the cost of not being a
+recognised framework.
 
-One hundred and seventy checks pass: ten for `Coordinate`, fifty-two for `Ship`,
-forty-three for `Board`, twenty-one for `RandomShipPlacer`, thirty-two for
-`GameController` and twelve for `CellStyle`, covering valid and invalid construction,
-all four boundaries, overlap, contact in all eight directions, hits, misses, repeated
-shots, sinking, victory and restart.
+Two hundred and ninety-six checks pass: ten for `Coordinate`, fifty-two for
+`Ship`, fifty-five for `Board`, twenty-six for `Difficulty`, twenty-one for
+`RandomShipPlacer`, one hundred and twenty for `GameController` and twelve for
+`CellStyle`, covering valid and invalid construction, all four boundaries,
+overlap, contact in all eight directions, hits, misses, repeated shots, sinking,
+victory, defeat and restart.
 
-The generator posed a problem worth describing. `Board` hides where the ships are,
-correctly for a game, but that left no simple way to check a generated fleet. Rather
-than weaken the class with an accessor only tests would use, the checks fire at all
-hundred cells and rebuild the ships as groups of hit cells that touch. That is valid
-only if ships never touch, so finding six groups of sizes four, three, three, two,
-two and two proves composition, absence of overlap and the separation rule at once.
+The generator posed a problem worth describing. `Board` hides where the ships
+are, correctly for a game, but that left no simple way to check a generated
+fleet. Rather than weaken the class with an accessor only tests would use, the
+checks fire at every square and rebuild the ships as groups of touching hits.
+Finding six groups of sizes four, three, three, two, two and two then proves
+composition, absence of overlap and the separation rule at once.
+
+Whether a game can really be lost cannot be settled by one example, so the
+controller is played out on the Hard setting against ten different seeds; the
+checks confirm that each game ends, is won or lost and never both, and never
+exceeds its limit. The list of `ShipStatus` objects `Board` hands out is checked
+the way a careless caller might treat it: an old copy is kept, another shot
+fired, and the copy confirmed unchanged.
 
 Writing checks first also found a defect: a board too small for the Battleship
 produced `IllegalArgumentException: bound must be positive` from inside the Java
-library, because a non-positive bound reached `Random.nextInt`. The generator now
-refuses a ship longer than the board first.
+library, because a non-positive bound reached `Random.nextInt`. The generator
+now refuses a ship longer than the board first.
 
 ## 6.2 Functional testing
 
-Unit checks cannot show the interface behaves correctly, so the finished game was
-also tested by clicking the grid as a player would. The ten cases that were run are
-listed in Appendix B.
+Unit checks cannot show the interface behaves correctly, so the finished game
+was also worked as a player would. The fifteen cases run are listed in Appendix
+B; five of them cover the difficulty setting, including the one case where the
+interface has to protect the player from itself, by asking before a change of
+setting throws away a game in progress.
 
-Two defects were found this way, both invisible to every automated check. The first
-interface drew a typographic symbol on each fired-at cell and every one appeared as
-an empty box, because the look and feel's font had no glyph for them. Switching to
-plain ASCII revealed a second fault: the marks then showed as `...`, because a Swing
-button's wide default margin left too little room for one character. Setting the cell
-margin to zero fixed it. Unit checks can confirm a colour is blue but not that a
-character is legible, which is why both kinds of testing were needed.
+Two defects were found this way, both invisible to every automated check. The
+first interface drew a typographic symbol on each fired-at square and every one
+appeared as an empty box, because the look and feel’s font had no glyph for
+them. Switching to plain ASCII revealed a second fault: the marks then showed as
+three dots, because a Swing button’s wide default margin left too little room
+for one character. Setting the margin to zero fixed it. Unit checks can confirm
+a colour is blue but not that a character is legible.
 
 <!-- UZ -->
 
@@ -60,8 +70,9 @@ tekshirayotgan bo'lishi mumkin. Tekshiruvlar JUnit emas, `main` metodli oddiy Ja
 klasslari; bu loyihani tashqi bog'liqliklardan xoli qoldiradi, lekin ular tan olingan
 framework emas.
 
-Yuz yetmish tekshiruv o'tadi: `Coordinate` uchun 10, `Ship` uchun 52, `Board` uchun
-43, `RandomShipPlacer` uchun 21, `GameController` uchun 32 va `CellStyle` uchun 12 —
+Ikki yuz to'qson olti tekshiruv o'tadi: `Coordinate` uchun 10, `Ship` uchun 52,
+`Board` uchun 55, `Difficulty` uchun 26, `RandomShipPlacer` uchun 21,
+`GameController` uchun 120 va `CellStyle` uchun 12 —
 to'g'ri va noto'g'ri qurish, to'rt chegara, ustma-ustlik, sakkiz yo'nalishdagi tegish,
 tegishlar, o'tkazib yuborishlar, takroriy o'qlar, cho'kish, g'alaba va qayta
 boshlashni qamraydi.
@@ -82,13 +93,15 @@ generator taxtadan uzun kemani avval rad etadi.
 ### 6.2 Funksional testlash
 
 Unit tekshiruvlar interfeys to'g'ri ishlashini ko'rsata olmaydi, shuning uchun tayyor
-o'yin o'yinchi kabi to'rni bosib ham testlandi. To'qqizta holat (F1–F9) jadvalda:
+o'yin o'yinchi kabi ham testlandi. O'n beshta holat (F1–F15) Appendix B da:
 ilovani ishga tushirish, bo'sh katakni bosish, kema katagini bosish, allaqachon o'q
 uzilgan katakni bosish, kemaning oxirgi katagiga tegish, butun flotni cho'ktirish,
 g'alabadan keyin bosish, New Game bosish va oxirida ochilgan flotni sanash.
 Hammasi muvaffaqiyatli o'tdi.
 
 F9 avtomatik tekshiruvlardan boshqa holda ko'rinmaydigan talabni ekranda tasdiqlaydi.
+F11–F15 qiyinlik darajasini qamraydi; eng muhimi F14 — o'yin o'rtasida darajani
+almashtirmoqchi bo'lsangiz oyna avval so'raydi, "yo'q" desangiz o'yin o'zgarmaydi.
 
 Shu yo'l bilan ikkita nuqson topildi, ikkalasi ham hamma avtomatik tekshiruvga
 ko'rinmas edi. Birinchi interfeys har bir o'q uzilgan katakka tipografik belgi

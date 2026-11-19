@@ -8,7 +8,7 @@ editable, so a diagram can be corrected and re-exported without redrawing it.
 | `figure-A-initial-class-model.png` | Figure 3 | 2.5 | The class model as planned, six classes | https://lucid.app/lucidchart/dee6da29-efbc-431a-8f43-249749a5337b/edit |
 | `figure-B-use-case-model.png` | Figure 1 | 2.3 | One actor, five use cases, one included | https://lucid.app/lucidchart/b4dc3db4-48a8-4676-85bd-3dfdde75aaff/edit |
 | `figure-C-sequence-model.png` | Figure 2 | 2.4 | One shot, with both alternatives | https://lucid.app/lucidchart/8172fdcb-e94a-493b-b216-d4faf446aadf/edit |
-| `figure-D-final-class-model.png` | Figure 4 | 4.3 | The implemented model, ten classes | https://lucid.app/lucidchart/16ced3e3-aa11-4f73-b39d-c82c6ce21f1d/edit |
+| `figure-D-final-class-model.png` | Figure 4 | 4.3 | The implemented model, fourteen classes | https://lucid.app/lucidchart/82027fbf-7a0a-4d53-8111-2fbf619e1e8f/edit |
 
 All four figures go into the report, and all four are required: the brief asks for
 use case, sequence and class models in the planning section and a class model of the
@@ -47,5 +47,22 @@ and white, because the dashed outlines and the arrowheads carry the same informa
 
 The file names still use the letters A to D, which is how the diagrams were drawn,
 but the report numbers every figure in one sequence so that Word can build a table of
-figures: the four diagrams are Figures 1 to 4 and the seven screenshots are Figures 5
-to 11. The table above gives the mapping.
+figures: the four diagrams are Figures 1 to 4 and the ten screenshots are Figures 5
+to 14. The table above gives the mapping.
+
+## Figure 4 was redrawn
+
+Figure 4 was redrawn on 19 November, after the difficulty setting and the fleet panel
+were added. The model it showed had ten classes; the code now has fourteen, so the
+earlier version no longer described the submitted code. The document it was drawn in
+is a new one, listed in the table above; the superseded one was
+`16ced3e3-aa11-4f73-b39d-c82c6ce21f1d`.
+
+The four classes added to the figure are `Difficulty`, `ShipStatus`, `BoardPanel` and
+`FleetPanel`, together with the interface `ShotListener` that `BoardPanel` declares.
+`ShotListener` is drawn as a separate box although it is a nested interface, because
+the relationship it carries, a panel reporting a click to whoever built it, is the
+reason the interface exists.
+
+Figures 1, 2 and 3 were deliberately left alone. They show the design as it was
+planned, which is what the planning section requires.

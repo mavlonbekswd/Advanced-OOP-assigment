@@ -119,3 +119,30 @@ this is a requirement rather than a preference. Two rendering faults were found 
 by looking at the running application: a font with no glyph for the chosen symbols,
 and a default button margin that clipped a single character to an ellipsis. Both are
 recorded in testing/GUI-RESULTS.md.
+
+## 19 November 2026 — difficulty, the fleet report, and a three-part view
+The view is now four classes. `CellStyle` is unchanged. `BoardPanel` owns the grid
+and the row and column labels, and reports a click through `ShotListener`, an
+interface it declares itself; it knows nothing about what a click means, which is
+what keeps the rules out of the drawing code. `FleetPanel` lists the enemy ships and
+the running counts. `GameWindow` assembles the two panels, holds the toolbar and the
+status line, and still holds a controller and nothing else.
+
+`Difficulty` is an enum in the model pairing a board size with a shot limit. The size
+goes to `RandomShipPlacer.createBoard(size)`, which already existed and was already
+tested, so the setting cost no change to the placement rules at all. The shot limit is
+held and enforced by `GameController`, because the number of shots a player is allowed
+is a fact about one session of play, while `Board` knows only squares, ships and what
+has been fired at. `isWon()`, `isLost()` and `isGameOver()` make the three outcomes
+explicit; a shot at a finished game is refused rather than ignored.
+
+The fleet panel raised the question the encapsulation rule was always going to face:
+how does a view name the ships that have gone down without learning where any ship is?
+`Board.getFleetStatus()` answers it by reducing each ship to a `ShipStatus`, an
+immutable pair of type and condition with no positions in it, returned as an
+unmodifiable list. The ships themselves still never leave the board.
+
+Easy allows one shot per square deliberately. It cannot be lost, which makes it the
+only setting on which a check that fires at every square is guaranteed to finish in a
+win; the sweep-based controller checks were moved onto it, and defeat is checked
+separately by playing out ten seeded games on Hard.

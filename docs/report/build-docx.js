@@ -3,7 +3,7 @@
  *
  * The prose here is kept identical to the Markdown files in this folder; this
  * script adds only what Word has to supply: a cover page, a table of contents,
- * a table of figures, numbered headings, the ten captioned figures and a single
+ * a table of figures, numbered headings, the fourteen captioned figures and a single
  * font throughout.
  *
  * Usage, from the repository root:
@@ -185,14 +185,14 @@ const frontMatter = [
 const body = [];
 
 body.push(h1('1. Introduction'));
-body.push(p('This report describes the planning, design, implementation and testing of a single-player Battleship game written in Java for module MOD004883. In the game, a human player fires at a ten by ten grid that hides a computer-placed fleet of six ships, and the game ends when every ship has been sunk.'));
-body.push(p('The report is organised to follow the order in which the work was carried out. It begins with the requirements taken from the assessment brief and the plan that was written before any code existed, then explains the main design decisions and how they were put into practice. It then presents the testing that was used to show the rules behave correctly, and finishes by evaluating the finished application against the original requirements.'));
+body.push(p('This report describes the planning, design, implementation and testing of a single-player Battleship game written in Java for module MOD004883. The player fires at a grid hiding a computer-placed fleet of six ships. The standard game is ten squares by ten and ends when every ship is sunk; a difficulty setting varies the grid and limits the shots allowed, so a game can also be lost.'));
+body.push(p('The report follows the order in which the work was carried out: the requirements taken from the assessment brief, the plan written before any code existed, the design decisions and how they were put into practice, the testing used to show the rules behave correctly, and an evaluation of the finished application against the original requirements.'));
 
 body.push(h1('2. Requirements and Planning'));
 body.push(h2('2.1 Requirements taken from the brief'));
-body.push(p('The brief fixes the rules, and these were treated as non-negotiable. The player is shown a ten by ten grid hiding one Battleship of four cells, two Cruisers of three and three Destroyers of two: six ships occupying sixteen of the hundred cells. The computer must place them so that no two overlap and no two touch. A selected square turns blue if empty and red if it covers a ship, and the game ends once every ship is sunk.'));
-body.push(p('The brief also sets two thresholds. A basic game, with fixed ship positions and typed coordinates, cannot score above forty per cent; to pass fifty it lists several extensions. Two were chosen: random placement and a mouse-controlled interface, both of which the Week 4 lecture also names as expected. Difficulty levels and a two-player mode were deliberately deferred, because a smaller application that works completely was judged more valuable than a larger unfinished one.'));
-body.push(p('Two points required a decision. First, the brief says ships must not touch but not whether meeting at a corner counts; this project treats diagonal contact as touching. The stricter rule cannot produce a layout the looser rule would reject, so it is safe under either reading and is simple to test. Second, the Week 3 lecture illustrates the same game with a differently named fleet. The assessment brief is authoritative, so its composition was followed.'));
+body.push(p('The brief fixes the rules, and these were treated as non-negotiable. A ten by ten grid hides one Battleship of four squares, two Cruisers of three and three Destroyers of two: six ships on sixteen of the hundred squares, placed so that no two overlap and no two touch. A square turns blue if empty and red if it covers a ship, and the game ends once every ship is sunk.'));
+body.push(p('The brief also sets two thresholds. A basic game, with fixed ship positions and typed coordinates, cannot score above forty per cent; to pass fifty it lists several extensions. Two were chosen at this stage: random placement and a mouse-controlled interface, both of which the Week 4 lecture also names as expected. Difficulty levels and a two-player mode were deliberately deferred, because a smaller application that works completely was judged more valuable than a larger unfinished one. Difficulty levels were in fact added later, after the rest of the game was finished; section 4.4 records that change. Two-player play remains undone.'));
+body.push(p('Two points required a decision. First, the brief says ships must not touch but not whether meeting at a corner counts; this project treats diagonal contact as touching, which cannot produce a layout the looser rule would reject. Second, the Week 3 lecture illustrates the same game with a differently named fleet; the assessment brief is authoritative, so its composition was followed.'));
 
 body.push(h2('2.2 How the work was planned'));
 body.push(p('As the work of one person, development followed a waterfall sequence rather than an iterative team process, as the Week 5 lecture advises: requirements, then architecture, then code, then tests of each piece as it was finished.'));
@@ -204,7 +204,7 @@ body.push(p('The only actor is the human player, who starts a game, selects a ta
 body.push(...figure('docs/diagrams/figure-B-use-case-model.png', 340, 416, 'Initial use case model. The player is the only actor; random placement is included by starting and restarting a game.'));
 
 body.push(h2('2.4 Initial sequence model'));
-body.push(p('The diagram follows one shot. The player clicks a cell, the window asks the controller to shoot, and the controller either refuses because the game is already won or passes the coordinate to the board. The board answers with one of its four outcomes, consulting a ship only when the cell has not been fired at before. The window then asks the controller for the state of every cell and redraws the grid. Showing the two alternatives on the diagram is deliberate: the duplicate-shot rule and the end of the game are where most of the controller’s behaviour lives.'));
+body.push(p('The diagram follows one shot. The player clicks a square, the window asks the controller to shoot, and the controller either refuses because the game is over or passes the coordinate to the board, which answers with one of its four outcomes. The window then redraws the grid from the controller. Showing the two alternatives is deliberate: the duplicate-shot rule and the end of the game are where most of the controller’s behaviour lives.'));
 body.push(...figure('docs/diagrams/figure-C-sequence-model.png', 330, 494, 'Initial sequence model for a single shot, including the duplicate-shot and game-over alternatives.'));
 
 body.push(h2('2.5 Initial class model'));
@@ -212,90 +212,71 @@ body.push(p('This is the model as it was planned, not the finished code. `Board`
 body.push(...figure('docs/diagrams/figure-A-initial-class-model.png', 560, 336, 'Initial class model, as planned before any code was written.'));
 
 body.push(h1('3. Design Decisions and Justification'));
-body.push(p('The application is divided into four layers: a model holding the state and the rules, a service generating a fleet, a controller running the lifecycle of a game, and an interface drawing it. This follows the Model-View-Controller pattern shown in the Week 6 lecture, and was chosen for a practical reason rather than to demonstrate a pattern: the rules can be tested completely without opening a window.'));
-body.push(p('The first decision was whether the three kinds of ship should be subclasses. They were not: the brief distinguishes them only by length, and a subclass adding no behaviour its parent lacks adds complexity without meaning. A single `Ship` class holds a `ShipType` enum recording the length instead. The Week 3 lecture reaches the same conclusion about this game, noting a ship hierarchy is not really necessary for an example this simple though it would help in a more complex one.'));
+body.push(p('The application is divided into four layers: a model holding the state and the rules, a service generating a fleet, a controller running the lifecycle of a game, and an interface drawing it. This follows the Model-View-Controller pattern shown in the Week 6 lecture, and was chosen for a practical reason: the rules can be tested completely without opening a window.'));
+body.push(p('The first decision was whether the three kinds of ship should be subclasses. They were not: the brief distinguishes them only by length, and a subclass adding no behaviour its parent lacks adds complexity without meaning. A single `Ship` class holds a `ShipType` enum recording the length instead, and the Week 3 lecture reaches the same conclusion about this game.'));
 body.push(p('The second concerns where each rule lives. Only `Board` decides whether a placement is legal. The fleet generator chooses positions at random but never judges them; it offers each candidate to the board and accepts the verdict. The rule about ships not touching therefore appears in exactly one method and cannot be stated inconsistently in two places, which is the DRY principle from the Week 7 lecture.'));
-body.push(p('The third concerns what each class refuses to reveal. `Board` never hands out its ships and the controller offers no route to the board, so the interface receives the board size, the outcome of every cell already fired at, the counts and whether the game is over: enough to draw the grid and announce victory, not enough to expose where the ships are.'));
-body.push(p('Finally, the cross-platform look and feel is requested at start-up, because some native ones ignore a button’s background colour and the brief requires blue and red cells. That makes it a requirement rather than a matter of taste.'));
+body.push(p('The third concerns what each class refuses to reveal. `Board` never hands out its ships and the controller offers no route to the board, so the interface receives the board size, the outcome of every square already fired at, the counts and whether the game is over: enough to draw the grid, not enough to expose where the ships are.'));
+body.push(p('The difficulty setting, added after the rest of the game was finished, raised both questions again. A setting changes the size of the grid and the number of shots and nothing else, since the brief fixes the fleet. Both figures belong in the model, as a `Difficulty` enum, but the shot limit is enforced by the controller, because the number of shots allowed is a fact about one session of play while the board knows only squares, ships and shots. Listing the enemy fleet beside the grid tested the third decision directly: the interface must report which ships have gone down without learning where they are, so `Board` reduces each ship to a `ShipStatus`, its type and whether it has sunk, with no positions at all.'));
+body.push(p('Finally, the cross-platform look and feel is requested at start-up, because some native ones ignore a button’s background colour and the brief requires blue and red squares. That makes it a requirement rather than a matter of taste.'));
 
 body.push(h1('4. Implementation'));
 body.push(h2('4.1 How the application is built'));
-body.push(p('Nine classes sit in the four layers described in section 3.'));
-body.push(p('In the model, `Coordinate` is an immutable cell location overriding `equals` and `hashCode`, without which a repeated shot would not be recognised. `Ship` holds its type, its cells and the cells hit so far, and its constructor rejects anything that is not a straight unbroken line of the right length, so a ship cannot exist in an invalid state. `Board` owns the ships and the shot history and is the sole authority on placement, rejecting any cell out of bounds or within one row and one column of an existing ship, which is how the diagonal rule is enforced.'));
-body.push(p('`RandomShipPlacer` builds a fleet, longest ship first, since placing the four-cell Battleship on an empty board wastes far fewer attempts. Retrying is bounded per ship and per board, and exhaustion raises an exception rather than looping. `GameController` starts and restarts games, passes shots to the board and counts shots and hits separately, and refuses further shots once the fleet is destroyed.'));
-body.push(p('In the interface, `CellStyle` returns the colour and mark for one cell and touches no component, which lets the required colours be checked with no display. `GameWindow` gives each cell a listener reporting its own position and redraws the grid from the controller after every shot.'));
-body.push(p('Two faults appeared only when the finished application was run, both concerning the mark drawn on a cell rather than its colour; they are described in section 6.2.'));
-
+body.push(p('Fourteen classes, counting the entry point, sit in the four layers described in section 3.'));
+body.push(p('In the model, `Coordinate` is an immutable square location overriding `equals` and `hashCode`, without which a repeated shot would not be recognised. `Ship` holds its type, its squares and the squares hit so far, and its constructor rejects anything that is not a straight unbroken line of the right length, so a ship cannot exist in an invalid state. `Board` owns the ships and the shot history and is the sole authority on placement, rejecting any square out of bounds or within one row and one column of an existing ship, which is how the diagonal rule is enforced. `Difficulty` pairs a board size with a shot limit, and `ShipStatus` records one ship’s type and condition so the fleet can be listed without its positions leaving `Board`.'));
+body.push(p('`RandomShipPlacer` builds a fleet, longest ship first, since placing the four-square Battleship on an empty board wastes far fewer attempts. Retrying is bounded, and exhaustion raises an exception rather than looping. `GameController` starts games at a chosen setting, passes shots to the board, counts shots and hits, and decides whether a game has been won, lost on the shot limit, or neither.'));
+body.push(p('The interface is four classes. `CellStyle` returns the colour and mark for one square and touches no component, which lets the required colours be checked with no display. `BoardPanel` draws the labelled grid and reports a click through a listener interface of its own. `FleetPanel` lists the enemy ships and the counts. `GameWindow` assembles them, holds the toolbar and the status line, and redraws both panels after every shot.'));
+body.push(p('Two faults appeared only when the finished application was run, both concerning the mark drawn on a square rather than its colour; they are described in section 6.2.'));
 body.push(h2('4.2 Object-oriented concepts'));
-body.push(p('Twelve of the concepts the brief lists are demonstrated, each in a specific place in the code:'));
-body.push(table([1800, 7000], [
-  ['Concept', 'Where it appears in this project'],
-  ['Encapsulation', 'Every field private, collections copied in and returned unmodifiable, ships never exposed'],
-  ['Abstraction', '`ShipType` and `ShotResult` name what the program needs without revealing storage'],
-  ['Inheritance', '`GameWindow` extends `JFrame`'],
-  ['Polymorphism', 'Swing handles listeners and components through their declared types'],
-  ['Interfaces', 'Each cell has an `ActionListener`'],
-  ['State', 'A ship’s hits, and the board’s shot history'],
-  ['Constructors', 'Used to guarantee validity: an invalid `Ship` cannot be created'],
-  ['Overloading', 'Two `Board` constructors, and two `createBoard` methods'],
-  ['Overriding', '`equals`, `hashCode` and `toString` on `Coordinate`'],
-  ['Architectural pattern', 'Model-View-Controller across the four packages'],
-  ['Collections', 'A list for positions because order matters, a set for hits because a cell is struck once, a map for history because the duplicate rule is key presence'],
-  ['Exceptions', 'Invalid arguments and an exhausted generator are refused rather than ignored'],
-]));
-body.push(new Paragraph({ text: '', spacing: { after: 160 } }));
-body.push(p('Abstract classes, a designed pattern and mutator methods are absent; section 7.4 explains each.'));
-
+body.push(p('Twelve of the concepts the brief lists are demonstrated. Appendix C ties each one to the place in the code where it appears; the three that are absent are explained in section 7.4.'));
 body.push(h2('4.3 Final class model'));
-body.push(p('The finished model has ten classes where the plan had six. Three of the additions are the enums `ShipType` and `ShotResult` and the appearance class `CellStyle`, each of which exists for a reason given in section 3; the fourth is `App`, the entry point. The direction of every dependency still runs inwards, from the window to the controller to the board, and nothing in the model knows about Swing.'));
-body.push(...figure('docs/diagrams/figure-D-final-class-model.png', 560, 401, 'Class model of the final code. Compare with Figure 3: four classes were added, and every dependency still points inwards.'));
-
+body.push(...figure('docs/diagrams/figure-D-final-class-model.png', 540, 506, 'Class model of the final code. Compare with Figure 3: eight classes were added, and every dependency still points inwards.'));
+body.push(p('The finished model has fourteen classes where the plan had six. Four are the enums `ShipType`, `ShotResult` and `Difficulty` and the value object `ShipStatus`; three more are `CellStyle` and the two panels the window is built from; the last is `App`, the entry point. Every dependency still runs inwards, from the window to the controller to the board, and nothing in the model knows about Swing.'));
 body.push(h2('4.4 Differences from the initial plan'));
-body.push(p('Four changes were made. The plan left open whether ship types should be subclasses; one class composed with an enum was used instead, for the reason in section 3. The plan expected JUnit; plain Java harnesses were used, leaving no dependencies, at the cost given in section 6.2. The plan did not say where the game-over guard would live; it went to the controller once the difference between a session fact and a grid rule became clear. Finally, the plan treated the interface as one class, and it became two, so the required colours could be tested without opening a window.'));
+body.push(p('Five changes were made. The plan left open whether ship types should be subclasses; one class composed with an enum was used instead, for the reason in section 3. The plan expected JUnit; plain Java harnesses were used, leaving no dependencies, at the cost given in section 6.2. The plan did not say where the game-over guard would live; it went to the controller once the difference between a session fact and a grid rule became clear. The plan also treated the interface as one class, and it became four.'));
+body.push(p('The fifth change is the one the plan argued against. Difficulty levels were listed as deferred in section 2.1, and were added once the rest of the game was finished and its checks were passing, because the cost turned out to be small: `Board` already took its size as a constructor argument and that argument was already tested. Deferring it was still the right decision at the time, since the work that made it cheap had not been done yet.'));
 
 body.push(h1('5. Annotated Screenshots'));
-body.push(p('The figures below were captured from the running application by driving it through its own buttons. The capture harness supplies the fleet generator with a seeded random source, so the same images can be produced again; the application itself uses an unseeded one.'));
-body.push(...figure('docs/screenshots/01-new-game.png', 300, 376, 'A new game. All hundred cells unexplored; the status line reads no shots, no hits, six ships. Nothing distinguishes a cell holding a ship from water.'));
-body.push(...figure('docs/screenshots/02-in-progress.png', 300, 376, 'A game in progress. Misses are blue and marked o, hits are red and marked X. Cells already fired at are disabled, so a second click does nothing.'));
-body.push(...figure('docs/screenshots/03-ship-sunk.png', 300, 376, 'A ship sunk. The Destroyer’s two cells turn a darker red, marked #, and the status line falls to four ships and shows Sunk!. The brief requires hits to be red; the darker shade is an addition separating a completed sinking from a ship still afloat.'));
-body.push(...figure('docs/screenshots/04-victory-board.png', 300, 376, 'Victory. The fleet is destroyed in eighty-nine shots and its sixteen cells are now visible: one line of four, two of three and three of two, none touching at an edge or a corner.'));
-body.push(...figure('docs/screenshots/05-victory-message.png', 300, 118, 'The victory message. A dialog reports the end of the game and the number of shots.'));
-body.push(...figure('docs/screenshots/06-after-restart.png', 300, 376, 'After Restart. New Game clears the board and both counters. The image is identical to Figure 5, which is the point: nothing of the finished game remains, and the new fleet is hidden again.'));
-
-body.push(...figure('docs/screenshots/07-second-victory-board.png', 300, 376, 'The second game, won. Because a cleared board looks exactly like one that has never been played, the second game was also played to the end. Its fleet occupies different cells from Figure 8 and took ninety-two shots, which is what shows that the ships really were placed again rather than reused.'));
+body.push(p('The figures below were captured from the running application by driving it through its own buttons. The harness gives the fleet generator a seeded random source, so the same images can be produced again, and plays the way a person does: firing on every other square until something is hit, then working outwards from it.'));
+body.push(...figure('docs/screenshots/01-new-game.png', 300, 270, 'A new game. All hundred squares unexplored, the fleet listed beside the grid and the counters at nought, seventy shots and sixteen ship squares. Nothing distinguishes a square holding a ship from water.'));
+body.push(...figure('docs/screenshots/02-in-progress.png', 300, 270, 'A game in progress. Misses are blue and marked o, hits are red and marked X. A square already fired at is disabled, so a second click does nothing. One Destroyer has already gone down and is crossed off in the list.'));
+body.push(...figure('docs/screenshots/03-ship-sunk.png', 300, 270, 'Half the fleet sunk. Twenty shots in, three ships are crossed off. The square that completes a sinking turns a darker red and is marked #; the earlier hits on that ship stay the lighter red, because each square records the outcome of the shot that struck it.'));
+body.push(...figure('docs/screenshots/04-victory-board.png', 300, 270, 'Victory. The fleet is destroyed in fifty-six of the seventy shots. All sixteen ship squares are now red and can be counted on screen: one line of four, two of three and three of two, none touching at an edge or a corner. The grey squares are the ones never fired at.'));
+body.push(...figure('docs/screenshots/05-victory-message.png', 240, 94, 'The victory message. A dialog reports the end of the game and the number of shots.'));
+body.push(...figure('docs/screenshots/06-after-restart.png', 300, 270, 'After New Game. The board and both counters are cleared. The image is indistinguishable from Figure 5, which is the point: nothing of the finished game remains and the new fleet is hidden again.'));
+body.push(...figure('docs/screenshots/07-second-victory-board.png', 300, 270, 'The second game, won. Because a cleared board looks exactly like one that has never been played, the second game was played out as well. Its fleet lies in different squares and took fifty-nine shots, which is what shows that the ships really were placed again rather than reused.'));
+body.push(...figure('docs/screenshots/08-easy-board.png', 300, 274, 'The Easy setting. Choosing a different setting rebuilds the grid. The board is twelve by twelve, the labels run to L and to 12, and a hundred and forty-four shots are allowed: one per square, so this setting cannot be lost.'));
+body.push(...figure('docs/screenshots/09-hard-out-of-shots.png', 290, 257, 'Losing on Hard. The board is eight by eight and only forty shots are allowed. Here they were fired in order rather than hunted, and they ran out with three ships still afloat and the bottom three rows never touched.'));
+body.push(...figure('docs/screenshots/10-out-of-shots-message.png', 290, 90, 'The out-of-shots message. The dialog names the limit that was reached and how much of the fleet survived.'));
 
 body.push(h1('6. Testing'));
 body.push(h2('6.1 Unit testing'));
 body.push(p('Testing ran alongside development: each class was checked before the next was written, and each check was watched failing before the code that satisfies it was written, because a check that has never failed may be testing the wrong thing. The checks are plain Java classes with a `main` method rather than JUnit tests, which leaves the project free of dependencies at the cost of not being a recognised framework.'));
-body.push(p('One hundred and seventy checks pass: ten for `Coordinate`, fifty-two for `Ship`, forty-three for `Board`, twenty-one for `RandomShipPlacer`, thirty-two for `GameController` and twelve for `CellStyle`, covering valid and invalid construction, all four boundaries, overlap, contact in all eight directions, hits, misses, repeated shots, sinking, victory and restart.'));
-body.push(p('The generator posed a problem worth describing. `Board` hides where the ships are, correctly for a game, but that left no simple way to check a generated fleet. Rather than weaken the class with an accessor only tests would use, the checks fire at all hundred cells and rebuild the ships as groups of hit cells that touch. That is valid only if ships never touch, so finding six groups of sizes four, three, three, two, two and two proves composition, absence of overlap and the separation rule at once.'));
+body.push(p('Two hundred and ninety-six checks pass: ten for `Coordinate`, fifty-two for `Ship`, fifty-five for `Board`, twenty-six for `Difficulty`, twenty-one for `RandomShipPlacer`, one hundred and twenty for `GameController` and twelve for `CellStyle`, covering valid and invalid construction, all four boundaries, overlap, contact in all eight directions, hits, misses, repeated shots, sinking, victory, defeat and restart.'));
+body.push(p('The generator posed a problem worth describing. `Board` hides where the ships are, correctly for a game, but that left no simple way to check a generated fleet. Rather than weaken the class with an accessor only tests would use, the checks fire at every square and rebuild the ships as groups of touching hits. Finding six groups of sizes four, three, three, two, two and two then proves composition, absence of overlap and the separation rule at once.'));
+body.push(p('Whether a game can really be lost cannot be settled by one example, so the controller is played out on the Hard setting against ten different seeds; the checks confirm that each game ends, is won or lost and never both, and never exceeds its limit. The list of `ShipStatus` objects `Board` hands out is checked the way a careless caller might treat it: an old copy is kept, another shot fired, and the copy confirmed unchanged.'));
 body.push(p('Writing checks first also found a defect: a board too small for the Battleship produced `IllegalArgumentException: bound must be positive` from inside the Java library, because a non-positive bound reached `Random.nextInt`. The generator now refuses a ship longer than the board first.'));
-
 body.push(h2('6.2 Functional testing'));
-body.push(p('Unit checks cannot show the interface behaves correctly, so the finished game was also tested by clicking the grid as a player would. The ten cases run are listed in Appendix B.'));
-body.push(p('Two defects were found this way, both invisible to every automated check. The first interface drew a typographic symbol on each fired-at cell and every one appeared as an empty box, because the look and feel’s font had no glyph for them. Switching to plain ASCII revealed a second fault: the marks then showed as three dots, because a Swing button’s wide default margin left too little room for one character. Setting the cell margin to zero fixed it. Unit checks can confirm a colour is blue but not that a character is legible, which is why both kinds of testing were needed.'));
+body.push(p('Unit checks cannot show the interface behaves correctly, so the finished game was also worked as a player would. The fifteen cases run are listed in Appendix B; five of them cover the difficulty setting, including the one case where the interface has to protect the player from itself, by asking before a change of setting throws away a game in progress.'));
+body.push(p('Two defects were found this way, both invisible to every automated check. The first interface drew a typographic symbol on each fired-at square and every one appeared as an empty box, because the look and feel’s font had no glyph for them. Switching to plain ASCII revealed a second fault: the marks showed as three dots, because a Swing button’s wide default margin left too little room for one character. Setting the margin to zero fixed it. A unit check can confirm a colour is blue, but not that a character is legible.'));
 
 body.push(h1('7. Critical Evaluation'));
 body.push(h2('7.1 Does the application meet the requirements?'));
-body.push(p('Every requirement from the brief is met, and both chosen extensions work. The strongest evidence for the placement rules is Figure 8: when a game ends the sixteen ship cells become visible and the fleet can be counted on screen, so a requirement otherwise visible only to automated checks can be confirmed by eye. Figure 11 adds the evidence for random placement: a second game, played to its end, hides the fleet in different cells.'));
+body.push(p('Every requirement from the brief is met, and three of the four extensions it lists above fifty per cent work: random placement, a mouse-controlled interface and difficulty levels. The strongest evidence for the placement rules is Figure 8: when the fleet is destroyed its sixteen squares can be counted on screen, so a requirement otherwise visible only to automated checks is confirmed by eye. Figure 11 adds the evidence for random placement, and Figures 13 and 14 show a state the original game could not reach at all, a game lost because the shots ran out.'));
 body.push(p('One requirement was interpreted rather than simply met. The brief does not say whether ships meeting at a corner are touching. This project treats diagonal contact as touching, the stricter reading, so every layout it produces would also be legal under the looser one; but it reduces the number of possible layouts and is an interpretation rather than a fact.'));
-
 body.push(h2('7.2 Was a plan made, and was it followed?'));
-body.push(p('A planning document was written before any application code existed and preserved unchanged. The order of work followed it: model, generator, controller, interface, each tested before the next began, and a development log records what was actually done at each stage, including what went wrong. The plan was not followed blindly: four differences are recorded in section 4.4 with their reasons.'));
-
+body.push(p('A planning document was written before any application code existed and preserved unchanged. The order of work followed it: model, generator, controller, interface, each tested before the next began, and a development log records what was actually done at each stage, including what went wrong. The plan was not followed blindly: five differences are recorded in section 4.4 with their reasons.'));
 body.push(h2('7.3 Limitations'));
-body.push(p('The checks are plain Java classes rather than JUnit tests: no dependencies, but not a recognised framework, and they stop at the first failure. The window itself has no automated coverage; its correctness rests on ten hand-run functional cases and on holding no rule of its own, and the two rendering faults in section 6.2 show the risk in that.'));
-body.push(p('`Board` does not enforce the fleet composition, accepting any ships that fit the placement rules. This lets tests use a board of one or two ships, but a future caller could build a wrong fleet unchallenged. Finally, nothing is saved, and the difficulty levels and two-player mode the brief offers were deliberately deferred.'));
-
+body.push(p('The checks are plain Java classes rather than JUnit tests: no dependencies, but not a recognised framework, and they stop at the first failure. The window has no automated coverage; its correctness rests on fifteen functional cases run through the real interface and on holding no rule of its own, and the two rendering faults in section 6.2 show the risk in that.'));
+body.push(p('`Board` does not enforce the fleet composition, accepting any ships that fit the placement rules. This lets tests use a board of one or two ships, but a future caller could build a wrong fleet unchallenged. Nothing is saved, so closing the window loses the game, and two-player play, the one remaining extension the brief lists, has not been attempted.'));
+body.push(p('One cosmetic point is worth admitting: when a ship sinks, only the square that finished it turns the darker red, because each square keeps the outcome of the shot that struck it. The fleet list beside the grid makes this clear enough to play with, but the board alone does not.'));
 body.push(h2('7.4 Object-oriented concepts'));
-body.push(p('Of the fourteen concepts the brief lists, expecting most but not all, this project demonstrates twelve; they are listed in section 4.2.'));
+body.push(p('Of the fourteen concepts the brief lists, expecting most but not all, this project demonstrates twelve; they are listed in Appendix C.'));
 body.push(p('Three are absent by decision rather than oversight. No abstract class is used, because nowhere do two implementations share partial behaviour. No design pattern was deliberately introduced: the observer relationship between a button and its listener comes from Swing. Mutator methods are almost entirely absent, because `Coordinate` and a ship’s positions are immutable; encapsulation was taken to mean controlling change, not providing a setter for every field.'));
-
 body.push(h2('7.5 What could be improved'));
-body.push(p('Converting the checks to JUnit would come first, since it is the gap most likely to cost marks while the behaviour checked would not change. After that, naming the type of ship when one is sunk, and adding difficulty levels through the board-size parameter that already exists and is already tested.'));
+body.push(p('Converting the checks to JUnit would come first, since it is the gap most likely to cost marks while the behaviour checked would not change. After that, re-marking every square of a ship when it sinks, so a destroyed ship reads as one shape rather than a run of hits. Saving a game in progress and two-player play would follow, in that order: the first is a small addition to the controller, the second is close to a second application.'));
 
 body.push(h1('8. Conclusion'));
-body.push(p('This project produced a working single-player Battleship game that meets every requirement in the brief, together with the two chosen extensions of random placement and a mouse-controlled interface. Separating the rules from the interface allowed the game to be tested thoroughly before anything was drawn, and writing checks before code found two defects that would otherwise have reached the finished application. The single most valuable next step would be to convert those checks to JUnit.'));
+body.push(p('This project produced a working single-player Battleship game that meets every requirement in the brief, together with three of the extensions it lists: random placement, a mouse-controlled interface and difficulty levels. Separating the rules from the interface allowed the game to be tested thoroughly before anything was drawn, and made the last of those extensions cheap enough to add after the rest was finished. Writing checks before code found two defects that would otherwise have reached the finished application. The single most valuable next step would be to convert those checks to JUnit.'));
 
 body.push(h1('9. References'));
 const references = [
@@ -354,19 +335,45 @@ body.push(new Table({
 
 body.push(new Paragraph({ children: [new PageBreak()] }));
 body.push(h1('Appendix B: Functional Test Cases'));
-body.push(p('These ten cases were run by hand on the finished application; they are discussed in section 6.2.'));
+body.push(p('These fifteen cases were run against the finished application through its own buttons; they are discussed in section 6.2.'));
 body.push(table([700, 2600, 3100, 2400], [
   ['#', 'Action', 'Expected', 'Observed'],
-  ['F1', 'Start the application', '100 unexplored cells, no shots, six ships', 'Pass, Figure 5'],
-  ['F2', 'Click an empty cell', 'Blue; shots +1, hits unchanged', 'Pass, Figure 6'],
-  ['F3', 'Click a ship cell', 'Red; shots +1, hits +1', 'Pass, Figure 6'],
-  ['F4', 'Click a cell already fired at', 'Nothing changes', 'Pass; cell disabled'],
-  ['F5', 'Hit a ship’s last cell', 'Dark red, ships left falls, Sunk!', 'Pass, Figure 7'],
+  ['F1', 'Start the application', '100 unexplored squares, no shots, six ships listed', 'Pass, Figure 5'],
+  ['F2', 'Click an empty square', 'Blue; shots +1, hits unchanged', 'Pass, Figure 6'],
+  ['F3', 'Click a ship square', 'Red; shots +1, hits +1', 'Pass, Figure 6'],
+  ['F4', 'Click a square already fired at', 'Nothing changes', 'Pass; square disabled'],
+  ['F5', 'Hit the last square of a ship', 'Dark red, the ship crossed off, Sunk rises', 'Pass, Figures 6 and 7'],
   ['F6', 'Sink the whole fleet', 'Victory dialog and total shots', 'Pass, Figures 8 and 9'],
   ['F7', 'Click after victory', 'Nothing happens', 'Pass; grid disabled'],
   ['F8', 'Press New Game', 'Board and counters cleared, new fleet', 'Pass, Figure 10'],
   ['F9', 'Count the revealed fleet', 'One 4, two 3s, three 2s, none touching', 'Pass, Figure 8'],
-  ['F10', 'Win a second game', 'A different fleet in different cells', 'Pass, Figure 11'],
+  ['F10', 'Win a second game', 'A different fleet in different squares', 'Pass, Figure 11'],
+  ['F11', 'Choose Easy', 'Grid rebuilt 12 by 12, labels to L and 12, 144 shots', 'Pass, Figure 12'],
+  ['F12', 'Choose Hard', 'Grid rebuilt 8 by 8, 40 shots', 'Pass; 64 squares, 0 / 40'],
+  ['F13', 'Use every shot on Hard', 'Out-of-shots dialog, grid disabled, ships still afloat', 'Pass, Figures 13 and 14'],
+  ['F14', 'Change the setting two shots into a game', 'Asks first; declining leaves the game untouched', 'Pass; still Hard, 2 / 40, status unchanged'],
+  ['F15', 'Press Rules', 'Explains the fleet, the colours and the shot limit', 'Pass'],
+]));
+body.push(new Paragraph({ text: '', spacing: { after: 160 } }));
+body.push(p('F10 was added after the first set of screenshots was reviewed: Figure 10 is indistinguishable from Figure 5, so only playing a second game out makes the new positions visible. F11 to F15 were added with the difficulty setting. F14 matters most of the five, because the setting is the one control that can destroy a game in progress by accident.'));
+
+body.push(new Paragraph({ children: [new PageBreak()] }));
+body.push(h1('Appendix C: Object-Oriented Concepts in This Project'));
+body.push(p('Twelve of the fourteen concepts the brief lists are demonstrated; the three absent ones are explained in section 7.4. This table was part of section 4.2 and was moved here, with the functional test cases, to keep the report inside its word limit.'));
+body.push(table([1800, 7000], [
+  ['Concept', 'Where it appears in this project'],
+  ['Encapsulation', 'Every field private, collections copied in and returned unmodifiable, ships never exposed even when the fleet is listed'],
+  ['Abstraction', '`ShipType`, `ShotResult` and `Difficulty` name what the program needs without revealing storage'],
+  ['Inheritance', '`GameWindow` extends `JFrame`'],
+  ['Polymorphism', 'Swing handles listeners and components through their declared types'],
+  ['Interfaces', '`BoardPanel` declares its own `ShotListener` so the grid can report a click without knowing what one means; each square also has an `ActionListener`'],
+  ['State', 'A ship’s hits, and the board’s shot history'],
+  ['Constructors', 'Used to guarantee validity: an invalid `Ship` cannot be created'],
+  ['Overloading', 'Two `Board` constructors, two `createBoard` methods and two `newGame` methods'],
+  ['Overriding', '`equals`, `hashCode` and `toString` on `Coordinate`; `toString` on `Difficulty` so a combo box needs no renderer'],
+  ['Architectural pattern', 'Model-View-Controller across the four packages'],
+  ['Collections', 'A list for positions because order matters, a set for hits because a square is struck once, a map for history because the duplicate rule is key presence'],
+  ['Exceptions', 'Invalid arguments, a shot at a finished game and an exhausted generator are refused rather than ignored'],
 ]));
 
 /* ---------- document ---------------------------------------------------- */

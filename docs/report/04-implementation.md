@@ -1,77 +1,76 @@
 # 4. Implementation
 
-*Target: 300 words plus the final class model. Status: complete except the diagram.*
+*Target: 300 words plus the final class model. Status: complete.*
 
 ---
 
 ## 4.1 How the application is built
 
-Nine classes sit in the four layers described in section 3.
+Fourteen classes, counting the entry point, sit in the four layers described in
+section 3.
 
-In the model, `Coordinate` is an immutable cell location overriding `equals` and
-`hashCode`, without which a repeated shot would not be recognised. `Ship` holds its
-type, its cells and the cells hit so far, and its constructor rejects anything that
-is not a straight unbroken line of the right length, so a ship cannot exist in an
-invalid state. `Board` owns the ships and the shot history and is the sole authority
-on placement, rejecting any cell out of bounds or within one row and one column of an
-existing ship, which is how the diagonal rule is enforced.
+In the model, `Coordinate` is an immutable square location overriding `equals`
+and `hashCode`, without which a repeated shot would not be recognised. `Ship`
+holds its type, its squares and the squares hit so far, and its constructor
+rejects anything that is not a straight unbroken line of the right length, so a
+ship cannot exist in an invalid state. `Board` owns the ships and the shot
+history and is the sole authority on placement, rejecting any square out of
+bounds or within one row and one column of an existing ship, which is how the
+diagonal rule is enforced. `Difficulty` pairs a board size with a shot limit,
+and `ShipStatus` records one ship’s type and condition so the fleet can be
+listed without its positions leaving `Board`.
 
-`RandomShipPlacer` builds a fleet, longest ship first, since placing the four-cell
-Battleship on an empty board wastes far fewer attempts. Retrying is bounded per ship
-and per board, and exhaustion raises an exception rather than looping.
-`GameController` starts and restarts games, passes shots to the board and counts
-shots and hits separately, and refuses further shots once the fleet is destroyed.
+`RandomShipPlacer` builds a fleet, longest ship first, since placing the four-
+square Battleship on an empty board wastes far fewer attempts. Retrying is
+bounded, and exhaustion raises an exception rather than looping.
+`GameController` starts games at a chosen setting, passes shots to the board,
+counts shots and hits, and decides whether a game has been won, lost on the shot
+limit, or neither.
 
-In the interface, `CellStyle` returns the colour and mark for one cell and touches no
-component, which lets the required colours be checked with no display. `GameWindow`
-gives each cell a listener reporting its own position and redraws the grid from the
-controller after every shot.
+The interface is four classes. `CellStyle` returns the colour and mark for one
+square and touches no component, which lets the required colours be checked with
+no display. `BoardPanel` draws the labelled grid and reports a click through a
+listener interface of its own. `FleetPanel` lists the enemy ships and the
+counts. `GameWindow` assembles them, holds the toolbar and the status line, and
+redraws both panels after every shot.
 
-Two faults appeared only when the finished application was run, both concerning the
-mark drawn on a cell rather than its colour; they are described in section 6.2.
+Two faults appeared only when the finished application was run, both concerning
+the mark drawn on a square rather than its colour; they are described in section
+6.2.
 
 ## 4.2 Object-oriented concepts
 
-Twelve of the concepts the brief lists are demonstrated, each in a specific place in
-the code:
-
-| Concept | Where it appears in this project |
-| --- | --- |
-| Encapsulation | Every field private, collections copied in and returned unmodifiable, ships never exposed |
-| Abstraction | `ShipType` and `ShotResult` name what the program needs without revealing storage |
-| Inheritance | `GameWindow` extends `JFrame` |
-| Polymorphism | Swing handles listeners and components through their declared types |
-| Interfaces | Each cell has an `ActionListener` |
-| State | A ship's hits, and the board's shot history |
-| Constructors | Used to guarantee validity: an invalid `Ship` cannot be created |
-| Overloading | Two `Board` constructors, and two `createBoard` methods |
-| Overriding | `equals`, `hashCode` and `toString` on `Coordinate` |
-| Architectural pattern | Model-View-Controller across the four packages |
-| Collections | A list for positions because order matters, a set for hits because a cell is struck once, a map for history because the duplicate rule is key presence |
-| Exceptions | Invalid arguments and an exhausted generator are refused rather than ignored |
-
-Abstract classes, a designed pattern and mutator methods are absent; section 7.4
-explains each.
+Twelve of the concepts the brief lists are demonstrated. Appendix C ties each
+one to the place in the code where it appears; the three that are absent are
+explained in section 7.4.
 
 ## 4.3 Final class model
 
 *Figure 4 — `docs/diagrams/figure-D-final-class-model.png`*
 
-The finished model has ten classes where the plan had six. Three of the additions
-are the enums `ShipType` and `ShotResult` and the appearance class `CellStyle`, each
-of which exists for a reason given in section 3; the fourth is `App`, the entry
-point. The direction of every dependency still runs inwards, from the window to the
-controller to the board, and nothing in the model knows about Swing.
+The finished model has fourteen classes where the plan had six. Four are the
+enums `ShipType`, `ShotResult` and `Difficulty` and the value object
+`ShipStatus`; three more are `CellStyle` and the two panels the window is built
+from; the last is `App`, the entry point. Every dependency still runs inwards,
+from the window to the controller to the board, and nothing in the model knows
+about Swing.
 
 ## 4.4 Differences from the initial plan
 
-Four changes were made. The plan left open whether ship types should be subclasses;
-one class composed with an enum was used instead, for the reason in section 3. The
-plan expected JUnit; plain Java harnesses were used, leaving no dependencies, at the
-cost given in section 6.2. The plan did not say where the game-over guard would live;
-it went to the controller once the difference between a session fact and a grid rule
-became clear. Finally, the plan treated the interface as one class, and it became
-two, so the required colours could be tested without opening a window.
+Five changes were made. The plan left open whether ship types should be
+subclasses; one class composed with an enum was used instead, for the reason in
+section 3. The plan expected JUnit; plain Java harnesses were used, leaving no
+dependencies, at the cost given in section 6.2. The plan did not say where the
+game-over guard would live; it went to the controller once the difference
+between a session fact and a grid rule became clear. The plan also treated the
+interface as one class, and it became four.
+
+The fifth change is the one the plan argued against. Difficulty levels were
+listed as deferred in section 2.1, and were added once the rest of the game was
+finished and its checks were passing, because the cost turned out to be small:
+`Board` already took its size as a constructor argument and that argument was
+already tested. Deferring it was still the right decision at the time, since the
+work that made it cheap had not been done yet.
 
 <!-- UZ -->
 
@@ -81,7 +80,8 @@ two, so the required colours could be tested without opening a window.
 
 ### 4.1 Ilova qanday qurilgan
 
-To'qqiz klass 3-bo'limda tasvirlangan to'rt qatlamda joylashgan.
+O'n to'rt klass (kirish nuqtasi bilan birga) 3-bo'limda tasvirlangan to'rt qatlamda
+joylashgan.
 
 Modelda `Coordinate` — `equals` va `hashCode` ni qayta aniqlagan o'zgarmas katak
 manzili; busiz takroriy o'q tanib olinmas edi. `Ship` o'z turini, kataklarini va shu
@@ -123,15 +123,21 @@ Abstract class, ataylab qo'yilgan design pattern va mutator metodlar yo'q; har b
 
 ### 4.3 Yakuniy class model
 
-**Hali chizilmagan**, to'rt qatlamni qamrashi kerak.
+Tayyor modelda 14 klass bor, rejada 6 ta edi. Qo'shilganlar: `ShipType`, `ShotResult`,
+`Difficulty` enum'lari, `ShipStatus` qiymat obyekti, `CellStyle` va oyna qurilgan ikkita
+panel, hamda `App`. Bog'liqliklar yo'nalishi hamon ichkariga qarab boradi va modelda
+Swing haqida hech narsa yo'q.
 
 ### 4.4 Dastlabki rejadan farqlar
 
-To'rtta o'zgarish qilindi. Reja kema turlari subclass bo'ladimi degan savolni ochiq
+Beshta o'zgarish qilindi. Reja kema turlari subclass bo'ladimi degan savolni ochiq
 qoldirgan edi; buning o'rniga enum bilan birikkan bitta klass ishlatildi (sabab
 3-bo'limda). Reja JUnit kutgan edi; o'rniga oddiy Java harness'lar ishlatildi, bu
 hech qanday tashqi bog'liqlik qoldirmadi — narxi 6.2-da. Reja o'yin tugaganini
 tekshiruvchi qulf qayerda turishini aytmagan edi; u kontrollerga ketdi, sessiya fakti
-bilan to'r qoidasi orasidagi farq aniq bo'lgach. Nihoyat, reja interfeysni bitta klass
-deb hisoblagan edi, u ikkita bo'ldi — shunda talab qilingan ranglarni oyna ochmasdan
-testlash mumkin bo'ldi.
+bilan to'r qoidasi orasidagi farq aniq bo'lgach. Reja interfeysni bitta klass deb hisoblagan edi, u to'rtta
+bo'ldi. Beshinchi o'zgarish — rejaga zid bo'lgani: 2.1-da "keyinga qoldirildi" deb
+yozilgan qiyinlik darajalari qolgan hammasi tugab, testlari o'tgandan keyin qo'shildi.
+Qaror o'zgardi, chunki narxi arzon chiqdi: `Board` allaqachon o'lchamni konstruktor
+orqali olardi va bu allaqachon testlangan edi. Lekin o'sha paytda uni keyinga qoldirish
+hamon to'g'ri qaror edi — uni arzon qilgan ish hali bajarilmagan edi.

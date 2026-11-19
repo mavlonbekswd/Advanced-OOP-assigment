@@ -1,31 +1,31 @@
 # 2. Requirements and Planning
 
-*Target: 400 words plus three UML models. Status: prose complete; diagrams pending.*
+*Target: 400 words plus three UML models. Status: complete.*
 
 ---
 
 ## 2.1 Requirements taken from the brief
 
-The brief fixes the rules, and these were treated as non-negotiable. The player is
-shown a ten by ten grid hiding one Battleship of four cells, two Cruisers of three
-and three Destroyers of two: six ships occupying sixteen of the hundred cells. The
-computer must place them so that no two overlap and no two touch. A selected square
-turns blue if empty and red if it covers a ship, and the game ends once every ship is
-sunk.
+The brief fixes the rules, and these were treated as non-negotiable. A ten by
+ten grid hides one Battleship of four squares, two Cruisers of three and three
+Destroyers of two: six ships on sixteen of the hundred squares, placed so that
+no two overlap and no two touch. A square turns blue if empty and red if it
+covers a ship, and the game ends once every ship is sunk.
 
 The brief also sets two thresholds. A basic game, with fixed ship positions and typed
 coordinates, cannot score above forty per cent; to pass fifty it lists several
-extensions. Two were chosen: random placement and a mouse-controlled interface, both
-of which the Week 4 lecture also names as expected. Difficulty levels and a
-two-player mode were deliberately deferred, because a smaller application that works
-completely was judged more valuable than a larger unfinished one.
+extensions. Two were chosen at this stage: random placement and a mouse-controlled
+interface, both of which the Week 4 lecture also names as expected. Difficulty levels
+and a two-player mode were deliberately deferred, because a smaller application that
+works completely was judged more valuable than a larger unfinished one. Difficulty
+levels were in fact added later, after the rest of the game was finished; section 4.4
+records that change. Two-player play remains undone.
 
-Two points required a decision. First, the brief says ships must not touch but not
-whether meeting at a corner counts; this project treats diagonal contact as touching.
-The stricter rule cannot produce a layout the looser rule would reject, so it is safe
-under either reading and is simple to test. Second, the Week 3 lecture illustrates
-the same game with a differently named fleet. The assessment brief is authoritative,
-so its composition was followed.
+Two points required a decision. First, the brief says ships must not touch but
+not whether meeting at a corner counts; this project treats diagonal contact as
+touching, which cannot produce a layout the looser rule would reject. Second,
+the Week 3 lecture illustrates the same game with a differently named fleet; the
+assessment brief is authoritative, so its composition was followed.
 
 ## 2.2 How the work was planned
 
@@ -58,13 +58,12 @@ connected to the actor.
 
 *Figure 2 — `docs/diagrams/figure-C-sequence-model.png`*
 
-The diagram follows one shot. The player clicks a cell, the window asks the
-controller to shoot, and the controller either refuses because the game is already
-won or passes the coordinate to the board. The board answers with one of its four
-outcomes, consulting a ship only when the cell has not been fired at before. The
-window then asks the controller for the state of every cell and redraws the grid.
-Showing the two alternatives on the diagram is deliberate: the duplicate-shot rule
-and the end of the game are where most of the controller's behaviour lives.
+The diagram follows one shot. The player clicks a square, the window asks the
+controller to shoot, and the controller either refuses because the game is over
+or passes the coordinate to the board, which answers with one of its four
+outcomes. The window then redraws the grid from the controller. Showing the two
+alternatives is deliberate: the duplicate-shot rule and the end of the game are
+where most of the controller's behaviour lives.
 
 ## 2.5 Initial class model
 

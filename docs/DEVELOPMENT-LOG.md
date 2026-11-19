@@ -163,3 +163,51 @@ figure captions. Sections 1 to 8 now come to 2,670 words. The fourth trim, cutti
 the requirements in section 2.1, was not made, because planning carries 25%.
 
 All 170 self-checks still pass, and `javac -Xlint:all` is clean.
+
+## 19 November 2026 — difficulty settings, a fleet panel, and the report brought back in line
+
+The interface was rebuilt around three pieces instead of one: `BoardPanel` draws the
+labelled grid and reports a click through a `ShotListener` it declares itself,
+`FleetPanel` lists the enemy ships and the counts, and `GameWindow` assembles them and
+holds the toolbar and the status line. `CellStyle` was left alone, so its twelve
+checks and the ASCII-mark history behind them still stand.
+
+Two classes were added to the model. `Difficulty` pairs a board size with a shot
+limit (Easy 12 and 144, Normal 10 and 70, Hard 8 and 40), and `ShipStatus` carries a
+ship's type and whether it has sunk and nothing else. The second exists because the
+fleet panel has to name the ships that have gone down without being told where any
+ship is; `Board.getFleetStatus()` reduces each ship to one of these, so the rule that
+a ship never leaves the board survived a feature that appeared to need it broken.
+
+The shot limit is counted in `GameController`, not in `Board`, because how many shots
+a player is allowed is a fact about one session of play. That also gave the game a
+state it had never had: it can now be lost. `isWon()`, `isLost()` and `isGameOver()`
+make the three outcomes explicit, and a shot at a finished game is refused.
+
+Easy allows exactly one shot per square on purpose. It cannot be lost, which makes it
+the only setting where a check that fires at every square is certain to end in a win,
+and those sweep-based checks were moved onto it. Defeat is checked the other way
+round: ten seeded games played out on Hard, confirming that each one ends, that it is
+won or lost and never both, and that the shots never exceed the limit. The suite went
+from 170 checks to 296.
+
+The report then had to be brought back in line with the code, which was most of the
+work. Every screenshot was retaken, because the old set could not be reproduced: with
+a limit of seventy shots, clicking every square in turn no longer wins on Normal. The
+capture harness now plays the way a person does, firing on every other square and then
+working outwards from a hit, and the new Figure 8 shows a game won in fifty-six shots
+with a third of the board never touched. Three figures were added for the difficulty
+setting, Figure 4 was redrawn with the fourteen classes the code now has, and five
+functional cases (F11 to F15) were run against the real window and recorded.
+
+One old claim turned out to be wrong rather than merely out of date. The caption for
+the sunk-ship figure said both squares of a destroyed Destroyer turn the darker red.
+They do not: only the square that completes the sinking does, because each square
+keeps the outcome of the shot that struck it, and that was true of the first version
+too. The caption now describes what the picture shows, section 7.3 records it as a
+limitation, and section 7.5 proposes re-marking the whole ship as the fix.
+
+Adding all of this took the document from 2,670 words to 3,614, past the 3,000 limit.
+The concepts table moved from section 4.2 to a new Appendix C, as the functional test
+table had already moved to Appendix B, and every section was tightened; the document
+now stands at 2,951 words with fourteen captioned figures.
