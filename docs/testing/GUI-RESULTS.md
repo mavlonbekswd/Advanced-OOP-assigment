@@ -165,3 +165,30 @@ observed falling back.
 The marks are still drawn in the look and feel's disabled-text grey, because a square
 is disabled once it has been fired at. Against the red of a hit that is readable but
 not strong, and it was the same before this change.
+
+## 19 November 2026, evening — the mark colour
+
+The marks are now drawn in white. A square is disabled as soon as it has been fired
+at, and a disabled button draws its text in the look and feel's own grey, so that
+grey applied to every mark on the board.
+
+Measured as contrast ratios, which is the point of the change:
+
+| Cell | Metal's grey (#999999) | White |
+| --- | --- | --- |
+| Miss, blue | 1.29 | 3.68 |
+| Hit, red | 1.48 | 4.23 |
+| Sunk, dark red | 3.16 | 9.01 |
+
+The accessibility guidelines ask 3 to 1 of large text, which these marks are: bold at
+fifteen points. Two of the three failed before the change; all three pass now, and
+three checks in the CellStyle harness measure it, putting the suite at 316.
+
+Setting the colour is not as simple as `setForeground`, which a disabled button
+ignores. Three approaches were tried against a rendered button: `setForeground`
+alone, HTML text with an explicit colour, and replacing the look and feel's
+`Button.disabledText` default. Only the third worked; HTML was ignored in the same
+way. `BoardPanel` therefore sets that default, which is a global of the look and feel
+rather than state of the panel, so setting it again when the grid is rebuilt changes
+nothing. It applies to the New Game and Rules buttons too, but neither is ever
+disabled.

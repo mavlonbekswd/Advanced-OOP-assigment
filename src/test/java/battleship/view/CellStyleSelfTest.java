@@ -73,6 +73,14 @@ public final class CellStyleSelfTest {
         check(chosen != Marks.PLAIN || !canDrawEverySymbol(dialog),
                 "The fallback is only taken when a symbol is missing");
 
+        // The mark has to be readable on every colour it is ever drawn on. The
+        // threshold is the 3 to 1 ratio the Web Content Accessibility Guidelines ask
+        // of large text, and the marks are drawn bold at fifteen points.
+        for (ShotResult state : new ShotResult[] { ShotResult.MISS, ShotResult.HIT, ShotResult.SUNK }) {
+            double ratio = contrast(CellStyle.markColour(), CellStyle.colourFor(state));
+            check(ratio >= 3.0, "Mark is readable on " + state + " (ratio " + ratio + ")");
+        }
+
         // The board never records a duplicate as the state of a cell, so asking for
         // its appearance is a programming error rather than something to draw.
         rejects(IllegalArgumentException.class, () -> CellStyle.colourFor(ShotResult.ALREADY_SHOT));
@@ -109,6 +117,49 @@ public final class CellStyleSelfTest {
             }
         }
         return true;
+    }
+
+    /**
+     * Returns the contrast ratio between two colours, as the accessibility
+     * guidelines define it: the lighter relative luminance plus 0.05, divided by the
+     * darker plus 0.05. The result runs from 1 for two identical colours to 21 for
+     * black against white.
+     *
+     * @param one the first colour
+     * @param two the second colour
+     * @return the ratio between them
+     */
+    private static double contrast(Color one, Color two) {
+        double first = luminance(one);
+        double second = luminance(two);
+        double lighter = Math.max(first, second);
+        double darker = Math.min(first, second);
+        return (lighter + 0.05) / (darker + 0.05);
+    }
+
+    /**
+     * Returns the relative luminance of a colour: how bright the eye finds it, with
+     * each channel straightened out of the curve a screen applies to it and then
+     * weighted, because green reads as far brighter than blue at the same value.
+     *
+     * @param colour the colour to measure
+     * @return its luminance, from 0 for black to 1 for white
+     */
+    private static double luminance(Color colour) {
+        return 0.2126 * channel(colour.getRed())
+                + 0.7152 * channel(colour.getGreen())
+                + 0.0722 * channel(colour.getBlue());
+    }
+
+    /**
+     * Straightens one colour channel out of the curve a screen applies to it.
+     *
+     * @param value the channel, 0 to 255
+     * @return the linear value, 0 to 1
+     */
+    private static double channel(int value) {
+        double part = value / 255.0;
+        return part <= 0.03928 ? part / 12.92 : Math.pow((part + 0.055) / 1.055, 2.4);
     }
 
     private static void check(boolean result, String message) {

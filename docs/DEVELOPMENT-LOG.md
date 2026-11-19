@@ -237,3 +237,27 @@ looks like, so the harness cannot drift out of step with the grid it is reading.
 The CellStyle harness grew from 12 checks to 29, putting the suite at 313. The
 screenshots were retaken; the seeded games are identical, so every number already
 quoted in the report still holds and only the marks in the pictures changed.
+
+## 19 November 2026, evening — making the marks readable
+
+The marks were being drawn in the look and feel's disabled-text grey, because a
+square is disabled as soon as it has been fired at. That grey measures 1.29 to 1
+against the blue of a miss and 1.48 against the red of a hit, where the accessibility
+guidelines ask 3 to 1 of large text; only the dark red of a sunk square came close,
+at 3.16. The marks exist for a player who cannot tell the colours apart, so a mark
+that is itself hard to see defeats the point of having one.
+
+White gives 3.68, 4.23 and 9.01 on the three colours. `CellStyle.markColour()` holds
+that decision with the rest of the appearance, and three new checks measure the
+ratios rather than asserting a colour, which is the part worth keeping: the check
+would still be right if the cell colours changed.
+
+Getting the colour onto a disabled button took a measurement rather than a guess.
+`setForeground` is ignored on a disabled button, and so is an HTML colour inside the
+label, which was tried and rendered in the same grey. The only thing that works is
+replacing the look and feel's `Button.disabledText` default, so `BoardPanel` does
+that: it is the class that disables squares, so it is the class that answers for how
+a disabled square reads.
+
+The screenshots were retaken a third time. The seeded games came out identical once
+more, so again no number in the report moved and only the pictures changed.

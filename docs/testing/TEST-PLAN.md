@@ -11,6 +11,15 @@
 
 Add actual run date, command, outcome and environment. Automated model checks do not prove GUI behaviour. Add JUnit coverage before claiming completion of the unit-testing milestone.
 
+## 2026-11-19 verification, evening
+
+316 checks ran from a clean build after the marks were given their own colour: three
+new checks measure the contrast between that colour and each of the three cell
+colours, and require at least the 3 to 1 ratio the accessibility guidelines ask of
+large text. Measured with white: 3.68 on a miss, 4.23 on a hit, 9.01 on a sunk
+square. The grey it replaces, the Metal look and feel's #999999, gives 1.29, 1.48 and
+3.16, so two of the three failed.
+
 ## 2026-11-19 verification, later
 
 313 checks ran from a clean build after the cell marks were changed to drawn symbols

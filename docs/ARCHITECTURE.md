@@ -158,3 +158,16 @@ answer to every square.
 This closes the loop on the first rendering defect. The original fix was to stop
 using symbols; this one uses them when they will work and falls back when they will
 not, which is the difference between avoiding a failure and handling it.
+
+## 19 November 2026, evening — the mark colour
+`CellStyle` also answers what colour a mark is drawn in, so every appearance decision
+stays in the one class. One colour serves all three states: a second would have to be
+read against the first to carry any meaning, and the mark's whole purpose is to be
+readable without comparing colours.
+
+Applying it needed a look and feel default rather than a property of the button,
+because `setForeground` is ignored on a disabled button and a square is disabled as
+soon as it has been fired at. `BoardPanel` sets `Button.disabledText`, since it is
+the class that disables squares. That is a global of the look and feel, which is
+worth naming plainly: it is idempotent, and no other button in the window is ever
+disabled.

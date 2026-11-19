@@ -35,6 +35,13 @@ public final class CellStyle {
     /** A hit that completed a sinking: still red, but darker. */
     private static final Color SUNK = new Color(0x8E, 0x1C, 0x1A);
 
+    /**
+     * The colour every mark is drawn in. One colour serves all three states because
+     * white is the only one that stays readable on the blue of a miss and on both
+     * reds; the checks measure that rather than assume it.
+     */
+    private static final Color MARK = Color.WHITE;
+
     // The symbols are written as escapes so that this file stays plain ASCII and
     // compiles the same way whatever character set the compiler defaults to.
 
@@ -86,6 +93,21 @@ public final class CellStyle {
             case SUNK: return SUNK;
             default: throw new IllegalArgumentException("Not a cell state: " + result);
         }
+    }
+
+    /**
+     * Returns the colour a cell's mark should be drawn in.
+     *
+     * <p>The mark carries the same information as the colour of the cell, for a
+     * player who cannot tell blue from red or one red from the other, so it is of no
+     * use unless it is legible. It is drawn in one colour on every cell rather than
+     * one per state, because a second colour would have to be read against the first
+     * to mean anything.
+     *
+     * @return the colour of the mark
+     */
+    public static Color markColour() {
+        return MARK;
     }
 
     /**

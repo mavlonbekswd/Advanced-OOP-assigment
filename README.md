@@ -21,6 +21,6 @@ java -cp out battleship.controller.GameControllerSelfTest
 java -cp out battleship.view.CellStyleSelfTest
 ```
 
-No external dependencies. Self-checks are not JUnit; 313 of them pass, and `javadoc` reports no warnings. `battleship.App` opens the game: a labelled Swing grid with random non-touching fleet placement, blue misses, red hits, an enemy-fleet panel, a victory message and New Game. A difficulty setting changes the board size and the number of shots allowed, so a game can also be lost. Screenshots of the running application are in docs/screenshots.
+No external dependencies. Self-checks are not JUnit; 316 of them pass, and `javadoc` reports no warnings. `battleship.App` opens the game: a labelled Swing grid with random non-touching fleet placement, blue misses, red hits, an enemy-fleet panel, a victory message and New Game. A difficulty setting changes the board size and the number of shots allowed, so a game can also be lost. Screenshots of the running application are in docs/screenshots.
 
 Report sources live under docs/report. Preserve docs/planning as the initial baseline and record subsequent decisions honestly. Final Canvas deliverables remain a Word report and a separate Java ZIP. Teaching slides and unrelated sample projects are not redistributed here.

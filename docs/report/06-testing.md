@@ -13,12 +13,13 @@ thing. The checks are plain Java classes with a `main` method rather than JUnit
 tests, which leaves the project free of dependencies at the cost of not being a
 recognised framework.
 
-Three hundred and thirteen checks pass: ten for `Coordinate`, fifty-two for
+Three hundred and sixteen checks pass: ten for `Coordinate`, fifty-two for
 `Ship`, fifty-five for `Board`, twenty-six for `Difficulty`, twenty-one for
-`RandomShipPlacer`, one hundred and twenty for `GameController` and twenty-nine
+`RandomShipPlacer`, one hundred and twenty for `GameController` and thirty-two
 for `CellStyle`, covering valid and invalid construction, all four boundaries,
 overlap, contact in all eight directions, hits, misses, repeated shots, sinking,
-victory, defeat and restart.
+victory, defeat and restart. The mark colour is measured against each cell
+colour and must clear a three-to-one contrast ratio.
 
 The generator posed a problem worth describing. `Board` hides where the ships
 are, correctly for a game, but that left no simple way to check a generated

@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -77,6 +78,14 @@ public final class BoardPanel extends JPanel {
         Objects.requireNonNull(listener, "Shot listener is required");
         this.size = size;
         this.cells = new JButton[size][size];
+
+        // A square is disabled the moment it has been fired at, and a disabled
+        // button draws its text in the look and feel's own grey. Against the red of
+        // a hit that grey falls well under the contrast a player can rely on, and it
+        // would apply to every mark on the board. This is the only way the look and
+        // feel will take another colour; it is a default rather than state of this
+        // panel, so setting it again when the grid is rebuilt changes nothing.
+        UIManager.put("Button.disabledText", CellStyle.markColour());
 
         add(buildColumnLabels(), BorderLayout.NORTH);
         add(buildRowLabels(), BorderLayout.WEST);
