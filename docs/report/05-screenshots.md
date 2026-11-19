@@ -69,8 +69,8 @@ uchun 8-rasmdagi g'alaba haqiqiy o'yinga o'xshaydi (56 o'q, bir qancha katak umu
 bosilmagan).
 
 - **5-rasm** — yangi o'yin: 100 ta ochilmagan katak, yonida flot ro'yxati.
-- **6-rasm** — o'yin davomida: ko'k `o` = tegmadi, qizil `X` = tegdi, bitta Destroyer
-  allaqachon cho'kkan va ro'yxatdan o'chirilgan.
+- **6-rasm** — o'yin davomida: ko'k katakda nuqta = tegmadi, qizil katakda xoch =
+  tegdi; bitta Destroyer allaqachon cho'kkan va ro'yxatdan o'chirilgan.
 - **7-rasm** — 20 o'q, 3 ta kema cho'kkan.
 - **8-rasm** — g'alaba: 56/70 o'q, 16 katak sanaladi.
 - **9-rasm** — g'alaba oynasi.

@@ -1,5 +1,7 @@
 import battleship.controller.GameController;
+import battleship.model.ShotResult;
 import battleship.service.RandomShipPlacer;
+import battleship.view.CellStyle;
 import battleship.view.GameWindow;
 
 import javax.imageio.ImageIO;
@@ -48,13 +50,14 @@ public class Capture {
         save("01-new-game.png");
 
         // A few shots in: enough misses to show the blue, enough hits to show the red.
-        playUntil(() -> marks("X") + marks("#") >= 2 && marks("o") >= 4);
+        playUntil(() -> marks(ShotResult.HIT) + marks(ShotResult.SUNK) >= 2
+                && marks(ShotResult.MISS) >= 4);
         settle();
         save("02-in-progress.png");
 
         // Keep playing until half the fleet has gone down, so this picture is
         // clearly further on than the last one rather than a shot or two later.
-        playUntil(() -> marks("#") >= 3);
+        playUntil(() -> marks(ShotResult.SUNK) >= 3);
         settle();
         save("03-ship-sunk.png");
 
@@ -178,9 +181,9 @@ public class Capture {
         JButton cell = cells.get(index);
         cell.doClick();
         String mark = cell.getText();
-        if ("X".equals(mark)) {
+        if (markFor(ShotResult.HIT).equals(mark)) {
             queueNeighbours(index);
-        } else if ("#".equals(mark)) {
+        } else if (markFor(ShotResult.SUNK).equals(mark)) {
             targets.clear();
         }
         return true;
@@ -249,11 +252,29 @@ public class Capture {
         });
     }
 
-    /** @return how many squares currently show the given mark */
-    static int marks(String glyph) {
+    /**
+     * Asks the window itself what a state looks like, rather than assuming. The
+     * marks depend on what the font can draw, so hard-coding them here would make
+     * the harness disagree with the grid it is reading.
+     *
+     * @param state the state to look up
+     * @return the mark a square in that state carries
+     */
+    static String markFor(ShotResult state) {
+        return CellStyle.labelFor(state, CellStyle.marksFor(cells.get(0).getFont()));
+    }
+
+    /**
+     * Counts the squares showing a given state.
+     *
+     * @param state the state to count
+     * @return how many squares currently carry its mark
+     */
+    static int marks(ShotResult state) {
+        String mark = markFor(state);
         int total = 0;
         for (JButton cell : cells) {
-            if (glyph.equals(cell.getText())) {
+            if (mark.equals(cell.getText())) {
                 total++;
             }
         }

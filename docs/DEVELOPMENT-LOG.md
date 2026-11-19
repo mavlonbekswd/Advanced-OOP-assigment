@@ -211,3 +211,29 @@ Adding all of this took the document from 2,670 words to 3,614, past the 3,000 l
 The concepts table moved from section 4.2 to a new Appendix C, as the functional test
 table had already moved to Appendix B, and every section was tightened; the document
 now stands at 2,951 words with fourteen captioned figures.
+
+## 19 November 2026, later — the cell marks, properly this time
+
+The grid went back to drawn symbols: a bullet for a miss, a cross for a hit and a
+filled square for a sinking. The first version of the interface had tried symbols,
+found that the look and feel's font had no glyph for them, and retreated to `o`, `X`
+and `#`. Retreating was the right call at the time, but it left the real problem
+unanswered: the code was still assuming what a font can draw, it had just picked an
+assumption that happens to hold.
+
+`CellStyle.marksFor(Font)` answers the question instead of assuming. It takes the
+font that will actually draw the text, asks it about all three symbols, and returns
+`PLAIN` unless every one of them has a glyph. `labelFor` then takes that answer as an
+argument, so the class stays pure data with no Swing lookup inside it and both paths
+can be checked with no display open. `BoardPanel` asks once per redraw rather than
+once per square, since every square carries the same font.
+
+It is deliberately all three symbols or none. A grid showing two symbols and one
+letter would look like a bug rather than a fallback.
+
+`Capture.java` no longer hard-codes the marks either; it asks `CellStyle` what a hit
+looks like, so the harness cannot drift out of step with the grid it is reading.
+
+The CellStyle harness grew from 12 checks to 29, putting the suite at 313. The
+screenshots were retaken; the seeded games are identical, so every number already
+quoted in the report still holds and only the marks in the pictures changed.

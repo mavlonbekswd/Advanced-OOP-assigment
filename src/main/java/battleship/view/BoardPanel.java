@@ -158,12 +158,15 @@ public final class BoardPanel extends JPanel {
      */
     public void update(Map<Coordinate, ShotResult> shots, boolean locked) {
         Objects.requireNonNull(shots, "Shots are required");
+        // Asked once rather than per square: every square carries the same font, and
+        // the answer cannot change while the grid is being redrawn.
+        CellStyle.Marks marks = CellStyle.marksFor(cells[0][0].getFont());
         for (int row = 0; row < size; row++) {
             for (int column = 0; column < size; column++) {
                 ShotResult result = shots.get(new Coordinate(row, column));
                 JButton button = cells[row][column];
                 button.setBackground(CellStyle.colourFor(result));
-                button.setText(CellStyle.labelFor(result));
+                button.setText(CellStyle.labelFor(result, marks));
                 button.setEnabled(!locked && result == null);
             }
         }

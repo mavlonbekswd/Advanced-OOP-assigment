@@ -11,6 +11,13 @@
 
 Add actual run date, command, outcome and environment. Automated model checks do not prove GUI behaviour. Add JUnit coverage before claiming completion of the unit-testing milestone.
 
+## 2026-11-19 verification, later
+
+313 checks ran from a clean build after the cell marks were changed to drawn symbols
+with an ASCII fallback: the CellStyle harness went from 12 checks to 29, covering both
+sets of marks, the choice between them and the fallback taken when no font is given.
+Every other harness is unchanged and still passes.
+
 ## 2026-11-19 verification
 
 296 checks ran from a clean build on OpenJDK 23.0.2: 10 Coordinate, 52 Ship, 55 Board,

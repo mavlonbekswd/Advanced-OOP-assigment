@@ -13,10 +13,10 @@ thing. The checks are plain Java classes with a `main` method rather than JUnit
 tests, which leaves the project free of dependencies at the cost of not being a
 recognised framework.
 
-Two hundred and ninety-six checks pass: ten for `Coordinate`, fifty-two for
+Three hundred and thirteen checks pass: ten for `Coordinate`, fifty-two for
 `Ship`, fifty-five for `Board`, twenty-six for `Difficulty`, twenty-one for
-`RandomShipPlacer`, one hundred and twenty for `GameController` and twelve for
-`CellStyle`, covering valid and invalid construction, all four boundaries,
+`RandomShipPlacer`, one hundred and twenty for `GameController` and twenty-nine
+for `CellStyle`, covering valid and invalid construction, all four boundaries,
 overlap, contact in all eight directions, hits, misses, repeated shots, sinking,
 victory, defeat and restart.
 
@@ -70,9 +70,9 @@ tekshirayotgan bo'lishi mumkin. Tekshiruvlar JUnit emas, `main` metodli oddiy Ja
 klasslari; bu loyihani tashqi bog'liqliklardan xoli qoldiradi, lekin ular tan olingan
 framework emas.
 
-Ikki yuz to'qson olti tekshiruv o'tadi: `Coordinate` uchun 10, `Ship` uchun 52,
+Uch yuz o'n uch tekshiruv o'tadi: `Coordinate` uchun 10, `Ship` uchun 52,
 `Board` uchun 55, `Difficulty` uchun 26, `RandomShipPlacer` uchun 21,
-`GameController` uchun 120 va `CellStyle` uchun 12 —
+`GameController` uchun 120 va `CellStyle` uchun 29 —
 to'g'ri va noto'g'ri qurish, to'rt chegara, ustma-ustlik, sakkiz yo'nalishdagi tegish,
 tegishlar, o'tkazib yuborishlar, takroriy o'qlar, cho'kish, g'alaba va qayta
 boshlashni qamraydi.
@@ -111,3 +111,9 @@ nuqsonni ochdi: belgilar `...` bo'lib ko'rindi, chunki Swing tugmasining keng
 standart margin'i bitta harfga ham joy qoldirmagan edi. Katak margin'ini nolga
 qo'yish buni tuzatdi. Unit tekshiruv rang ko'k ekanini tasdiqlay oladi, lekin harf
 o'qilishini emas — ikkala tur test ham shuning uchun kerak bo'ldi.
+
+**19-noyabr qo'shimchasi.** Belgilar o'zgardi: `o X #` o'rniga nuqta, xoch va to'ldirilgan
+kvadrat. Eski nuqson (shrift belgini chizolmay bo'sh kvadrat chiqarishi) qaytmasligi
+uchun `CellStyle.marksFor(Font)` avval shriftdan **uchalasini ham chiza olasanmi** deb
+so'raydi; chizolmasa eski `o X #` ga qaytadi. `CellStyle` tekshiruvlari 12 dan 29 ga
+chiqdi — ikkala to'plam ham, qaytish yo'li ham testlangan.

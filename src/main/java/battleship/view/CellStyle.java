@@ -3,6 +3,8 @@ package battleship.view;
 import battleship.model.ShotResult;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.util.Objects;
 
 /**
  * Decides how one cell of the grid should look.
@@ -14,6 +16,10 @@ import java.awt.Color;
  *
  * <p>This class is never instantiated; it exists to hold that one decision in a
  * single place, so the grid and any future legend cannot disagree about a colour.
+ *
+ * <p>Nothing here looks the font up for itself. A caller that knows which font will
+ * actually draw the text asks {@link #marksFor(Font)} once and passes the answer in,
+ * which keeps the class free of Swing and leaves every path testable.
  */
 public final class CellStyle {
 
@@ -28,6 +34,35 @@ public final class CellStyle {
 
     /** A hit that completed a sinking: still red, but darker. */
     private static final Color SUNK = new Color(0x8E, 0x1C, 0x1A);
+
+    // The symbols are written as escapes so that this file stays plain ASCII and
+    // compiles the same way whatever character set the compiler defaults to.
+
+    /** A small dot for a miss: nothing was found here. */
+    private static final String MISS_SYMBOL = "\u2022";
+
+    /** A cross for a hit. */
+    private static final String HIT_SYMBOL = "\u2715";
+
+    /** A filled square for a ship that has been destroyed outright. */
+    private static final String SUNK_SYMBOL = "\u25A0";
+
+    /**
+     * Which set of marks a cell should carry.
+     *
+     * <p>The first version of the interface drew symbols without asking whether they
+     * could be drawn, and the font of the chosen look and feel had no glyph for them,
+     * so every marked cell showed an empty box. The project then retreated to plain
+     * ASCII. This enum is the better answer to the same problem: the symbols are used
+     * when the font can draw them, and the ASCII marks remain as the fallback, so a
+     * cell is never blank and never a box.
+     */
+    public enum Marks {
+        /** The drawn symbols, used when the font has a glyph for each of them. */
+        SYMBOLS,
+        /** Plain ASCII, which any font can draw. */
+        PLAIN
+    }
 
     private CellStyle() {
         // Holder of one decision: no instance is needed.
@@ -54,25 +89,47 @@ public final class CellStyle {
     }
 
     /**
-     * Returns the short text shown on a cell, so that the grid can still be read by
+     * Chooses the set of marks a given font can actually draw.
+     *
+     * <p>It is all three symbols or none of them. A grid showing two symbols and one
+     * ASCII character would look like a mistake, and the three marks have to be
+     * distinguishable from each other more than they have to be pretty.
+     *
+     * @param font the font that will draw the marks, or null if it is not known
+     * @return {@link Marks#SYMBOLS} only when every symbol has a glyph in that font
+     */
+    public static Marks marksFor(Font font) {
+        if (font == null) {
+            return Marks.PLAIN;
+        }
+        for (String symbol : new String[] { MISS_SYMBOL, HIT_SYMBOL, SUNK_SYMBOL }) {
+            if (!font.canDisplay(symbol.codePointAt(0))) {
+                return Marks.PLAIN;
+            }
+        }
+        return Marks.SYMBOLS;
+    }
+
+    /**
+     * Returns the mark shown on a cell, so that the grid can still be read by
      * someone who cannot distinguish the two colours.
      *
-     * <p>Plain ASCII characters are used deliberately. An earlier version used
-     * typographic symbols, which the font of the chosen look and feel could not
-     * render; on screen every marked cell showed an empty box instead.
-     *
      * @param result what the player knows about the cell, or null if never fired at
-     * @return the label for that state, empty for an unexplored cell
+     * @param marks which set of marks to use, from {@link #marksFor(Font)}
+     * @return the mark for that state, empty for an unexplored cell
      * @throws IllegalArgumentException if given {@link ShotResult#ALREADY_SHOT}
+     * @throws NullPointerException if marks is null
      */
-    public static String labelFor(ShotResult result) {
+    public static String labelFor(ShotResult result, Marks marks) {
+        Objects.requireNonNull(marks, "Mark set is required");
         if (result == null) {
             return "";
         }
+        boolean drawn = marks == Marks.SYMBOLS;
         switch (result) {
-            case MISS: return "o";
-            case HIT: return "X";
-            case SUNK: return "#";
+            case MISS: return drawn ? MISS_SYMBOL : "o";
+            case HIT: return drawn ? HIT_SYMBOL : "X";
+            case SUNK: return drawn ? SUNK_SYMBOL : "#";
             default: throw new IllegalArgumentException("Not a cell state: " + result);
         }
     }

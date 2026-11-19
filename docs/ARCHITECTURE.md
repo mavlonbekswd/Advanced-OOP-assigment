@@ -146,3 +146,15 @@ Easy allows one shot per square deliberately. It cannot be lost, which makes it 
 only setting on which a check that fires at every square is guaranteed to finish in a
 win; the sweep-based controller checks were moved onto it, and defeat is checked
 separately by playing out ten seeded games on Hard.
+
+## 19 November 2026, later — asking the font instead of assuming
+`CellStyle` gained `Marks`, an enum of two sets of cell marks, and `marksFor(Font)`,
+which chooses between them by asking the font whether it has a glyph for each symbol.
+`labelFor` takes the chosen set as an argument rather than looking a font up itself,
+so the class keeps no dependency on Swing beyond `java.awt.Font` and both branches
+can be checked with no display. `BoardPanel` asks once per redraw and passes the
+answer to every square.
+
+This closes the loop on the first rendering defect. The original fix was to stop
+using symbols; this one uses them when they will work and falls back when they will
+not, which is the difference between avoiding a failure and handling it.

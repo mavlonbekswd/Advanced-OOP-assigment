@@ -132,3 +132,36 @@ One behaviour was confirmed rather than found: when a ship sinks, only the squar
 completes it turns the darker red. The earlier caption for the sunk-ship figure said
 both squares of a Destroyer darken, which the picture never showed. This is recorded
 as a limitation in report section 7.3.
+
+## 19 November 2026, later — the cell marks
+
+The marks on a fired-at square were changed from `o`, `X` and `#` to a bullet, a
+cross and a filled square (U+2022, U+2715, U+25A0). The colours are untouched: the
+brief fixes blue for a miss and red for a hit.
+
+This is a return to the symbols the first version tried and had to abandon, but it is
+not the same decision. `CellStyle.marksFor(Font)` asks the font whether it can draw
+all three symbols before any of them is used, and answers `PLAIN` when it cannot, so
+the ASCII marks remain as a fallback rather than as a retreat. It is all three or
+none: a grid showing two symbols and one letter would read as a mistake.
+
+```
+PASS: 29 CellStyle self-checks      (was 12)
+313 checks in total
+```
+
+The seventeen new checks cover both sets, that the three marks differ within each
+set, that every mark is exactly one character so no square has to shrink its text,
+that `marksFor(null)` is `PLAIN`, and that `SYMBOLS` is chosen only when the font can
+in fact draw them. The last of these asks the font directly rather than trusting
+`CellStyle`, so it is not simply repeating the class under test.
+
+On this machine the look and feel's button font is the logical font `Dialog`, which
+can draw all three, so the running game uses the symbols; the screenshots in
+`docs/screenshots/` show them. The fallback path was therefore exercised by the
+checks rather than by the display, which is worth saying plainly: no machine has been
+observed falling back.
+
+The marks are still drawn in the look and feel's disabled-text grey, because a square
+is disabled once it has been fired at. Against the red of a hit that is readable but
+not strong, and it was the same before this change.
